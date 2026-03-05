@@ -1,0 +1,27 @@
+# Cloud Training Dependencies
+# Install with: pip install -r requirements-cloud.txt
+
+# Base PyTorch dependencies
+torch>=2.1.0
+torchaudio>=2.1.0
+
+# AWS SageMaker
+boto3>=1.28.0
+sagemaker>=2.39.0
+
+# Google Cloud Vertex AI
+google-cloud-aiplatform>=1.26.0
+google-cloud-storage>=2.10.0
+
+# Microsoft Azure ML
+azure-ai-ml>=1.8.0
+azure-identity>=1.13.0
+azure-storage-blob>=12.18.0
+
+# Monitoring & logging
+tensorboard>=2.13.0
+wandb>=0.15.0
+
+# Utilities
+python-dotenv>=1.0.0
+click>=8.1.0

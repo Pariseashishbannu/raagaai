@@ -1,0 +1,47 @@
+"""Cloud training Dockerfile for deploying to AWS SageMaker, GCP Vertex AI, or Azure ML."""
+
+FROM nvidia/cuda:12.1.0-runtime-ubuntu22.04
+
+WORKDIR /opt/ml
+
+# System dependencies
+RUN apt-get update && apt-get install -y \
+    python3.12 \
+    python3.12-dev \
+    python3-pip \
+    build-essential \
+    git \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set Python alias
+RUN ln -s /usr/bin/python3.12 /usr/bin/python
+
+# Install Python dependencies  
+COPY pyproject.toml requirements.txt* ./
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
+    pip install --no-cache-dir -e . && \
+    pip install --no-cache-dir \
+    torch>=2.1 \
+    torchaudio>=2.1 \
+    boto3 \
+    google-cloud-aiplatform \
+    google-cloud-storage \
+    azure-ai-ml \
+    azure-identity \
+    azure-storage-blob
+
+# Copy application code
+COPY src/ ./src/
+COPY scripts/ ./scripts/
+COPY data/ ./data/
+
+# Create directories for training
+RUN mkdir -p /opt/ml/input/data /opt/ml/model /opt/ml/output
+
+# Environment variables
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+
+# Training script entry point
+ENTRYPOINT ["python", "-m", "scripts.train_model"]

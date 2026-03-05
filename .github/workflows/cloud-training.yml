@@ -1,0 +1,176 @@
+name: Cloud Model Training
+
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: "Cloud platform (aws | gcp | azure)"
+        required: true
+        default: gcp
+      epochs:
+        description: "Training epochs"
+        required: false
+        default: "50"
+      batch_size:
+        description: "Batch size"
+        required: false
+        default: "32"
+      monitor:
+        description: "Monitor job until completion"
+        required: false
+        default: "true"
+
+jobs:
+  cloud-training:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -r requirements-cloud.txt
+
+      - name: Build training dataset
+        run: |
+          python -m scripts.build_dataset \
+            --synthetic-per-raga 200 \
+            --output data/training/svara_sequences.jsonl
+
+      - name: Configure AWS credentials (AWS)
+        if: github.event.inputs.platform == 'aws'
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Upload data to AWS S3 (AWS)
+        if: github.event.inputs.platform == 'aws'
+        run: |
+          aws s3 sync data/training s3://${{ secrets.AWS_S3_BUCKET }}/data/training/
+          aws s3 sync src s3://${{ secrets.AWS_S3_BUCKET }}/code/src/
+          aws s3 sync scripts s3://${{ secrets.AWS_S3_BUCKET }}/code/scripts/
+
+      - name: Submit AWS SageMaker training job
+        if: github.event.inputs.platform == 'aws'
+        run: |
+          python -m scripts.cloud_train \
+            --platform aws \
+            --role-arn ${{ secrets.AWS_SAGEMAKER_ROLE_ARN }} \
+            --bucket ${{ secrets.AWS_S3_BUCKET }} \
+            --job-name raaga-training-${{ github.run_id }} \
+            --monitor=$([ "${{ github.event.inputs.monitor }}" = "true" ] && echo "true" || echo "false")
+
+      - name: Authenticate to Google Cloud (GCP)
+        if: github.event.inputs.platform == 'gcp'
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK (GCP)
+        if: github.event.inputs.platform == 'gcp'
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: Upload data to GCS (GCP)
+        if: github.event.inputs.platform == 'gcp'
+        run: |
+          gsutil -m cp -r data/training gs://${{ secrets.GCP_GCS_BUCKET }}/data/
+          gsutil -m cp -r src gs://${{ secrets.GCP_GCS_BUCKET }}/code/
+          gsutil -m cp -r scripts gs://${{ secrets.GCP_GCS_BUCKET }}/code/
+
+      - name: Submit GCP Vertex AI training job
+        if: github.event.inputs.platform == 'gcp'
+        run: |
+          python -m scripts.cloud_train \
+            --platform gcp \
+            --project-id ${{ secrets.GCP_PROJECT_ID }} \
+            --bucket ${{ secrets.GCP_GCS_BUCKET }} \
+            --region us-central1 \
+            --job-name raaga-training-${{ github.run_id }} \
+            --monitor=$([ "${{ github.event.inputs.monitor }}" = "true" ] && echo "true" || echo "false")
+
+      - name: Authenticate to Azure (Azure ML)
+        if: github.event.inputs.platform == 'azure'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Upload data to Azure Blob Storage (Azure)
+        if: github.event.inputs.platform == 'azure'
+        run: |
+          az storage blob upload-batch \
+            -d raaga-ai \
+            -s data/training \
+            -c "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}"
+
+      - name: Submit Azure ML training job
+        if: github.event.inputs.platform == 'azure'
+        run: |
+          python -m scripts.cloud_train \
+            --platform azure \
+            --subscription-id ${{ secrets.AZURE_SUBSCRIPTION_ID }} \
+            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+            --workspace-name ${{ secrets.AZURE_WORKSPACE_NAME }} \
+            --job-name raaga-training-${{ github.run_id }} \
+            --monitor=$([ "${{ github.event.inputs.monitor }}" = "true" ] && echo "true" || echo "false")
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: training-logs
+          path: logs/
+
+  notify:
+    needs: cloud-training
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Notify Slack (Success)
+        if: needs.cloud-training.result == 'success'
+        uses: slackapi/slack-github-action@v1
+        with:
+          webhook-url: ${{ secrets.SLACK_WEBHOOK }}
+          payload: |
+            {
+              "text": "✅ Cloud training job completed",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "✅ *Cloud Training Success*\nPlatform: `${{ github.event.inputs.platform }}`\nRun: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}>"
+                  }
+                }
+              ]
+            }
+
+      - name: Notify Slack (Failure)
+        if: needs.cloud-training.result == 'failure'
+        uses: slackapi/slack-github-action@v1
+        with:
+          webhook-url: ${{ secrets.SLACK_WEBHOOK }}
+          payload: |
+            {
+              "text": "❌ Cloud training job failed",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "❌ *Cloud Training Failed*\nPlatform: `${{ github.event.inputs.platform }}`\nRun: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}>"
+                  }
+                }
+              ]
+            }

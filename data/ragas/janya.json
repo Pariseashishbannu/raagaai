@@ -1,0 +1,253 @@
+{
+  "mohanam": {
+    "id": "mohanam",
+    "name_english": "Mohanam",
+    "name_telugu": "మోహనం",
+    "melakarta_number": null,
+    "arohanam": ["Sa", "Ri2", "Ga2", "Pa", "Da2", "Sa"],
+    "avarohanam": ["Sa", "Da2", "Pa", "Ga2", "Ri2", "Sa"],
+    "varja_svaras": ["Ma1", "Ma2", "Ni1", "Ni2"],
+    "characteristic_phrases": [
+      ["Pa", "Da2", "Sa", "Da2", "Pa"],
+      ["Ga2", "Pa", "Da2", "Sa"],
+      ["Sa", "Da2", "Pa", "Ga2", "Ri2", "Sa"]
+    ],
+    "gamaka_rules": {},
+    "janya_of": "harikambhoji",
+    "rasa_tags": ["karuna", "shringara"]
+  },
+  "kalyani": {
+    "id": "kalyani",
+    "name_english": "Kalyani",
+    "name_telugu": "కల్యాణి",
+    "melakarta_number": null,
+    "arohanam": ["Sa", "Ri2", "Ga2", "Ma2", "Pa", "Da2", "Ni2", "Sa"],
+    "avarohanam": ["Sa", "Ni2", "Da2", "Pa", "Ma2", "Ga2", "Ri2", "Sa"],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      ["Sa", "Ri2", "Ga2", "Ma2", "Pa"],
+      ["Ni2", "Da2", "Pa", "Ma2", "Ga2"],
+      ["Pa", "Ma2", "Ga2", "Ri2", "Sa"]
+    ],
+    "gamaka_rules": {},
+    "janya_of": "mechakalyani",
+    "rasa_tags": ["shringara", "bhakti"]
+  },
+  "thodi": {
+    "id": "thodi",
+    "name_english": "Thodi",
+    "name_telugu": "తోడి",
+    "melakarta_number": null,
+    "arohanam": ["Sa", "Ri1", "Ga1", "Ma1", "Pa", "Da1", "Ni2", "Sa"],
+    "avarohanam": ["Sa", "Ni2", "Da1", "Pa", "Ma1", "Ga1", "Ri1", "Sa"],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      ["Sa", "Ri1", "Ga1", "Ma1"],
+      ["Da1", "Ni2", "Sa"],
+      ["Pa", "Ma1", "Ga1", "Ri1", "Sa"]
+    ],
+    "gamaka_rules": {},
+    "janya_of": "hanumatodi",
+    "rasa_tags": ["karuna", "bhakti"]
+  },
+  "bhairavi": {
+    "id": "bhairavi",
+    "name_english": "Bhairavi",
+    "name_telugu": "భైరవి",
+    "melakarta_number": null,
+    "arohanam": ["Sa", "Ri1", "Ga1", "Ma1", "Pa", "Da1", "Ni1", "Sa"],
+    "avarohanam": ["Sa", "Ni2", "Da2", "Pa", "Ma1", "Ga2", "Ri2", "Sa"],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      ["Sa", "Ri1", "Ga1", "Ma1", "Pa"],
+      ["Da1", "Ma1", "Pa", "Da1", "Ni1"],
+      ["Sa", "Ni2", "Da2", "Pa"]
+    ],
+    "gamaka_rules": {},
+    "janya_of": "natabhairavi",
+    "rasa_tags": ["karuna", "bhakti"]
+  },
+  "kambhoji": {
+    "id": "kambhoji",
+    "name_english": "Kambhoji",
+    "name_telugu": "కాంభోజి",
+    "melakarta_number": null,
+    "arohanam": ["Sa", "Ri2", "Ga2", "Ma1", "Pa", "Da2", "Sa"],
+    "avarohanam": ["Sa", "Ni2", "Da2", "Pa", "Ma1", "Ga2", "Ri2", "Sa"],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      ["Sa", "Ri2", "Ga2", "Ma1", "Pa"],
+      ["Pa", "Da2", "Sa"],
+      ["Sa", "Ni2", "Da2", "Pa", "Ma1"]
+    ],
+    "gamaka_rules": {},
+    "janya_of": "harikambhoji",
+    "rasa_tags": ["veera", "shringara"]
+  },
+  "hamsadhwani": {
+    "id": "hamsadhwani",
+    "name_english": "Hamsadhwani",
+    "name_telugu": "హంసధ్వని",
+    "melakarta_number": null,
+    "arohanam": ["Sa", "Ri2", "Ga2", "Pa", "Ni2", "Sa"],
+    "avarohanam": ["Sa", "Ni2", "Pa", "Ga2", "Ri2", "Sa"],
+    "varja_svaras": ["Ma1", "Ma2", "Da1", "Da2"],
+    "characteristic_phrases": [
+      ["Pa", "Ni2", "Sa"],
+      ["Ga2", "Pa", "Ni2", "Sa"],
+      ["Sa", "Ni2", "Pa", "Ga2", "Ri2"]
+    ],
+    "gamaka_rules": {},
+    "janya_of": "shankarabharanam",
+    "rasa_tags": ["mangalam", "shubham"]
+  },
+  "hindolam": {
+    "id": "hindolam",
+    "name_english": "Hindolam",
+    "name_telugu": "హిందోళం",
+    "melakarta_number": null,
+    "arohanam": ["Sa", "Ga1", "Ma1", "Da1", "Ni2", "Sa"],
+    "avarohanam": ["Sa", "Ni2", "Da1", "Ma1", "Ga1", "Sa"],
+    "varja_svaras": ["Ri1", "Ri2", "Pa"],
+    "characteristic_phrases": [
+      ["Sa", "Ga1", "Ma1", "Da1"],
+      ["Ni2", "Da1", "Ma1", "Ga1"],
+      ["Da1", "Ni2", "Sa"]
+    ],
+    "gamaka_rules": {},
+    "janya_of": "natabhairavi",
+    "rasa_tags": ["karuna"]
+  },
+  "abhogi": {
+    "id": "abhogi",
+    "name_english": "Abhogi",
+    "name_telugu": "అభోగి",
+    "melakarta_number": null,
+    "arohanam": ["Sa", "Ri2", "Ga2", "Ma1", "Da2", "Sa"],
+    "avarohanam": ["Sa", "Da2", "Ma1", "Ga2", "Ri2", "Sa"],
+    "varja_svaras": ["Pa", "Ni1", "Ni2"],
+    "characteristic_phrases": [
+      ["Ri2", "Ga2", "Ma1", "Da2"],
+      ["Da2", "Ma1", "Ga2", "Ri2"],
+      ["Sa", "Ri2", "Ga2", "Ma1"]
+    ],
+    "gamaka_rules": {},
+    "janya_of": "kharaharapriya",
+    "rasa_tags": ["shringara"]
+  },
+  "bilahari": {
+    "id": "bilahari",
+    "name_english": "Bilahari",
+    "name_telugu": "బిలహరి",
+    "melakarta_number": null,
+    "arohanam": ["Sa", "Ri2", "Ga2", "Pa", "Da2", "Sa"],
+    "avarohanam": ["Sa", "Ni2", "Da2", "Pa", "Ma1", "Ga2", "Ri2", "Sa"],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      ["Pa", "Da2", "Sa"],
+      ["Sa", "Ni2", "Da2", "Pa"],
+      ["Ga2", "Ri2", "Sa", "Ri2", "Ga2", "Pa"]
+    ],
+    "gamaka_rules": {},
+    "janya_of": "shankarabharanam",
+    "rasa_tags": ["veera", "shringara"]
+  },
+  "saveri": {
+    "id": "saveri",
+    "name_english": "Saveri",
+    "name_telugu": "సావేరి",
+    "melakarta_number": null,
+    "arohanam": ["Sa", "Ri1", "Ma1", "Pa", "Da1", "Sa"],
+    "avarohanam": ["Sa", "Da1", "Pa", "Ma1", "Ga2", "Ri1", "Sa"],
+    "varja_svaras": ["Ni1", "Ni2"],
+    "characteristic_phrases": [
+      ["Sa", "Ri1", "Ma1", "Pa"],
+      ["Da1", "Pa", "Ma1", "Ga2", "Ri1"]
+    ],
+    "gamaka_rules": {},
+    "janya_of": "mayamalavagowla",
+    "rasa_tags": ["karuna"]
+  },
+  "sankarabharanam": {
+    "id": "sankarabharanam",
+    "name_english": "Sankarabharanam",
+    "name_telugu": "శంకరాభరణం",
+    "melakarta_number": null,
+    "arohanam": ["Sa", "Ri2", "Ga2", "Ma1", "Pa", "Da2", "Ni2", "Sa"],
+    "avarohanam": ["Sa", "Ni2", "Da2", "Pa", "Ma1", "Ga2", "Ri2", "Sa"],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      ["Sa", "Ri2", "Ga2", "Ma1", "Pa"],
+      ["Pa", "Da2", "Ni2", "Sa"],
+      ["Sa", "Ni2", "Da2", "Pa", "Ma1", "Ga2", "Ri2", "Sa"]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": ["veera", "shanta", "bhakti"]
+  },
+  "keeravani": {
+    "id": "keeravani",
+    "name_english": "Keeravani",
+    "name_telugu": "కీరవాణి",
+    "melakarta_number": null,
+    "arohanam": ["Sa", "Ri2", "Ga1", "Ma1", "Pa", "Da1", "Ni2", "Sa"],
+    "avarohanam": ["Sa", "Ni2", "Da1", "Pa", "Ma1", "Ga1", "Ri2", "Sa"],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      ["Sa", "Ri2", "Ga1", "Ma1"],
+      ["Pa", "Da1", "Ni2", "Sa"],
+      ["Ni2", "Da1", "Pa", "Ma1"]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": ["karuna", "bhakti"]
+  },
+  "poorvikalyani": {
+    "id": "poorvikalyani",
+    "name_english": "Poorvikalyani",
+    "name_telugu": "పూర్వికల్యాణి",
+    "melakarta_number": null,
+    "arohanam": ["Sa", "Ri2", "Ga2", "Ma2", "Pa", "Da2", "Ni2", "Sa"],
+    "avarohanam": ["Sa", "Ni2", "Da2", "Pa", "Ma2", "Ga2", "Ri2", "Sa"],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      ["Ma2", "Pa", "Da2", "Ni2", "Sa"],
+      ["Sa", "Ni2", "Da2", "Pa", "Ma2"]
+    ],
+    "gamaka_rules": {},
+    "janya_of": "mechakalyani",
+    "rasa_tags": ["shringara"]
+  },
+  "madhyamavathi": {
+    "id": "madhyamavathi",
+    "name_english": "Madhyamavathi",
+    "name_telugu": "మధ్యమావతి",
+    "melakarta_number": null,
+    "arohanam": ["Sa", "Ri2", "Ma1", "Pa", "Ni2", "Sa"],
+    "avarohanam": ["Sa", "Ni2", "Pa", "Ma1", "Ri2", "Sa"],
+    "varja_svaras": ["Ga1", "Ga2", "Da1", "Da2"],
+    "characteristic_phrases": [
+      ["Sa", "Ri2", "Ma1", "Pa"],
+      ["Ni2", "Pa", "Ma1", "Ri2", "Sa"]
+    ],
+    "gamaka_rules": {},
+    "janya_of": "kharaharapriya",
+    "rasa_tags": ["bhakti", "karuna"]
+  },
+  "sahana": {
+    "id": "sahana",
+    "name_english": "Sahana",
+    "name_telugu": "సహానా",
+    "melakarta_number": null,
+    "arohanam": ["Sa", "Ri2", "Ga2", "Ma1", "Pa", "Ma1", "Da2", "Ni2", "Sa"],
+    "avarohanam": ["Sa", "Ni2", "Da2", "Pa", "Ma1", "Ga2", "Ri2", "Sa"],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      ["Pa", "Ma1", "Da2", "Ni2", "Sa"],
+      ["Ga2", "Ma1", "Pa", "Ma1", "Ga2"]
+    ],
+    "gamaka_rules": {},
+    "janya_of": "harikambhoji",
+    "rasa_tags": ["bhakti", "shringara"]
+  }
+}

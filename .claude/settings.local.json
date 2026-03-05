@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd:*)",
+      "Bash(cd /c/Users/Parise/raagaai && python -m pytest tests/unit/ -v 2>&1)",
+      "Bash(cd /c/Users/Parise/raagaai && npm create vite@latest frontend -- --template react 2>&1)",
+      "Bash(tail:*)",
+      "Bash(npm run:*)",
+      "Bash(start:*)",
+      "Bash(make run-api:*)",
+      "Bash(python:*)",
+      "Bash(docker:*)",
+      "Bash(netstat:*)",
+      "Bash(powershell.exe:*)",
+      "Bash(curl:*)",
+      "WebSearch",
+      "Bash(.venv/Scripts/python:*)",
+      "Bash(.venv/Scripts/pip install:*)",
+      "Bash(python3:*)",
+      "Bash(source:*)"
+    ]
+  }
+}

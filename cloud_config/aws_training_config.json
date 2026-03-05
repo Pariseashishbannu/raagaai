@@ -1,0 +1,19 @@
+{
+  "epochs": 50,
+  "batch_size": 32,
+  "learning_rate": 0.0003,
+  "embed_dim": 128,
+  "num_heads": 4,
+  "num_layers": 4,
+  "dropout": 0.1,
+  "grad_clip": 1.0,
+  "max_seq_len": 256,
+  "val_split": 0.1,
+  "patience": 10,
+  "machine_type": "ml.g4dn.xlarge",
+  "num_gpus": 1,
+  "training_data_path": "data/training/svara_sequences.jsonl",
+  "output_model_dir": "s3://raaga-ai-bucket/models",
+  "tensorboard_prefix": "s3://raaga-ai-bucket/tb-logs",
+  "checkpoint_prefix": "s3://raaga-ai-bucket/checkpoints"
+}

@@ -1,0 +1,51 @@
+{
+  "adi": {
+    "id": "adi",
+    "name": "Adi Tala (Chatusra Jathi Triputa)",
+    "beats": 8,
+    "jathi": "chatusra",
+    "structure": ["laghu", "drutam", "drutam"]
+  },
+  "rupaka": {
+    "id": "rupaka",
+    "name": "Rupaka Tala",
+    "beats": 3,
+    "jathi": "chatusra",
+    "structure": ["drutam", "laghu"]
+  },
+  "misra_chapu": {
+    "id": "misra_chapu",
+    "name": "Misra Chapu",
+    "beats": 7,
+    "jathi": "misra",
+    "structure": ["3", "2", "2"]
+  },
+  "khanda_chapu": {
+    "id": "khanda_chapu",
+    "name": "Khanda Chapu",
+    "beats": 5,
+    "jathi": "khanda",
+    "structure": ["2", "1", "2"]
+  },
+  "triputa": {
+    "id": "triputa",
+    "name": "Triputa Tala (Tisra Jathi)",
+    "beats": 7,
+    "jathi": "tisra",
+    "structure": ["laghu", "drutam", "drutam"]
+  },
+  "ata": {
+    "id": "ata",
+    "name": "Ata Tala",
+    "beats": 10,
+    "jathi": "chatusra",
+    "structure": ["laghu", "laghu", "drutam", "drutam"]
+  },
+  "dhruva": {
+    "id": "dhruva",
+    "name": "Dhruva Tala",
+    "beats": 11,
+    "jathi": "chatusra",
+    "structure": ["laghu", "drutam", "laghu", "laghu"]
+  }
+}

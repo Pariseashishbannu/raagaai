@@ -1,0 +1,3190 @@
+{
+  "kanakangi": {
+    "id": "kanakangi",
+    "name_english": "Kanakangi",
+    "name_telugu": "",
+    "melakarta_number": 1,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga1",
+      "Ma1",
+      "Pa",
+      "Da1",
+      "Ni1",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni1",
+      "Da1",
+      "Pa",
+      "Ma1",
+      "Ga1",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga1",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni1",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "ratnangi": {
+    "id": "ratnangi",
+    "name_english": "Ratnangi",
+    "name_telugu": "",
+    "melakarta_number": 2,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga1",
+      "Ma1",
+      "Pa",
+      "Da1",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da1",
+      "Pa",
+      "Ma1",
+      "Ga1",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga1",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "ganamurthi": {
+    "id": "ganamurthi",
+    "name_english": "Ganamurthi",
+    "name_telugu": "",
+    "melakarta_number": 3,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga1",
+      "Ma1",
+      "Pa",
+      "Da1",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da1",
+      "Pa",
+      "Ma1",
+      "Ga1",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga1",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "vanaspathi": {
+    "id": "vanaspathi",
+    "name_english": "Vanaspathi",
+    "name_telugu": "",
+    "melakarta_number": 4,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga1",
+      "Ma1",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma1",
+      "Ga1",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga1",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "manavathi": {
+    "id": "manavathi",
+    "name_english": "Manavathi",
+    "name_telugu": "",
+    "melakarta_number": 5,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga1",
+      "Ma1",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma1",
+      "Ga1",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga1",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "tanarupi": {
+    "id": "tanarupi",
+    "name_english": "Tanarupi",
+    "name_telugu": "",
+    "melakarta_number": 6,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga1",
+      "Ma1",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma1",
+      "Ga1",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga1",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "senavathi": {
+    "id": "senavathi",
+    "name_english": "Senavathi",
+    "name_telugu": "",
+    "melakarta_number": 7,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da1",
+      "Ni1",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni1",
+      "Da1",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni1",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "hanumatodi": {
+    "id": "hanumatodi",
+    "name_english": "Hanumatodi",
+    "name_telugu": "",
+    "melakarta_number": 8,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da1",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da1",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": [
+      "karuna"
+    ]
+  },
+  "dhenuka": {
+    "id": "dhenuka",
+    "name_english": "Dhenuka",
+    "name_telugu": "",
+    "melakarta_number": 9,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da1",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da1",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "natakapriya": {
+    "id": "natakapriya",
+    "name_english": "Natakapriya",
+    "name_telugu": "",
+    "melakarta_number": 10,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "kokilapriya": {
+    "id": "kokilapriya",
+    "name_english": "Kokilapriya",
+    "name_telugu": "",
+    "melakarta_number": 11,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "rupavathi": {
+    "id": "rupavathi",
+    "name_english": "Rupavathi",
+    "name_telugu": "",
+    "melakarta_number": 12,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "gayakapriya": {
+    "id": "gayakapriya",
+    "name_english": "Gayakapriya",
+    "name_telugu": "",
+    "melakarta_number": 13,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da1",
+      "Ni1",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni1",
+      "Da1",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni1",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "vakulabharanam": {
+    "id": "vakulabharanam",
+    "name_english": "Vakulabharanam",
+    "name_telugu": "",
+    "melakarta_number": 14,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da1",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da1",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "mayamalavagowla": {
+    "id": "mayamalavagowla",
+    "name_english": "Mayamalavagowla",
+    "name_telugu": "",
+    "melakarta_number": 15,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da1",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da1",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": [
+      "bhakti"
+    ]
+  },
+  "chakravakam": {
+    "id": "chakravakam",
+    "name_english": "Chakravakam",
+    "name_telugu": "",
+    "melakarta_number": 16,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "suryakantam": {
+    "id": "suryakantam",
+    "name_english": "Suryakantam",
+    "name_telugu": "",
+    "melakarta_number": 17,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "hatakambari": {
+    "id": "hatakambari",
+    "name_english": "Hatakambari",
+    "name_telugu": "",
+    "melakarta_number": 18,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "jhankaradhwani": {
+    "id": "jhankaradhwani",
+    "name_english": "Jhankaradhwani",
+    "name_telugu": "",
+    "melakarta_number": 19,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da1",
+      "Ni1",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni1",
+      "Da1",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni1",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "natabhairavi": {
+    "id": "natabhairavi",
+    "name_english": "Natabhairavi",
+    "name_telugu": "",
+    "melakarta_number": 20,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da1",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da1",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": [
+      "karuna",
+      "shanta"
+    ]
+  },
+  "keeravani": {
+    "id": "keeravani",
+    "name_english": "Keeravani",
+    "name_telugu": "",
+    "melakarta_number": 21,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da1",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da1",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "kharaharapriya": {
+    "id": "kharaharapriya",
+    "name_english": "Kharaharapriya",
+    "name_telugu": "",
+    "melakarta_number": 22,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": [
+      "shringara"
+    ]
+  },
+  "gourimanohari": {
+    "id": "gourimanohari",
+    "name_english": "Gourimanohari",
+    "name_telugu": "",
+    "melakarta_number": 23,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "varunapriya": {
+    "id": "varunapriya",
+    "name_english": "Varunapriya",
+    "name_telugu": "",
+    "melakarta_number": 24,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "mararanjani": {
+    "id": "mararanjani",
+    "name_english": "Mararanjani",
+    "name_telugu": "",
+    "melakarta_number": 25,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da1",
+      "Ni1",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni1",
+      "Da1",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni1",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "charukesi": {
+    "id": "charukesi",
+    "name_english": "Charukesi",
+    "name_telugu": "",
+    "melakarta_number": 26,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da1",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da1",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "sarasangi": {
+    "id": "sarasangi",
+    "name_english": "Sarasangi",
+    "name_telugu": "",
+    "melakarta_number": 27,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da1",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da1",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "harikambhoji": {
+    "id": "harikambhoji",
+    "name_english": "Harikambhoji",
+    "name_telugu": "",
+    "melakarta_number": 28,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": [
+      "shringara",
+      "karuna"
+    ]
+  },
+  "shankarabharanam": {
+    "id": "shankarabharanam",
+    "name_english": "Shankarabharanam",
+    "name_telugu": "",
+    "melakarta_number": 29,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": [
+      "veera",
+      "shanta"
+    ]
+  },
+  "naganandini": {
+    "id": "naganandini",
+    "name_english": "Naganandini",
+    "name_telugu": "",
+    "melakarta_number": 30,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "yagapriya": {
+    "id": "yagapriya",
+    "name_english": "Yagapriya",
+    "name_telugu": "",
+    "melakarta_number": 31,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da1",
+      "Ni1",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni1",
+      "Da1",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni1",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "ragavardhini": {
+    "id": "ragavardhini",
+    "name_english": "Ragavardhini",
+    "name_telugu": "",
+    "melakarta_number": 32,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da1",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da1",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "gangeyabhushini": {
+    "id": "gangeyabhushini",
+    "name_english": "Gangeyabhushini",
+    "name_telugu": "",
+    "melakarta_number": 33,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da1",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da1",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "vagadheeswari": {
+    "id": "vagadheeswari",
+    "name_english": "Vagadheeswari",
+    "name_telugu": "",
+    "melakarta_number": 34,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "shulini": {
+    "id": "shulini",
+    "name_english": "Shulini",
+    "name_telugu": "",
+    "melakarta_number": 35,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "chalanata": {
+    "id": "chalanata",
+    "name_english": "Chalanata",
+    "name_telugu": "",
+    "melakarta_number": 36,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma1",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma1",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma1"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "salagam": {
+    "id": "salagam",
+    "name_english": "Salagam",
+    "name_telugu": "",
+    "melakarta_number": 37,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga1",
+      "Ma2",
+      "Pa",
+      "Da1",
+      "Ni1",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni1",
+      "Da1",
+      "Pa",
+      "Ma2",
+      "Ga1",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga1",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni1",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "jalarnavam": {
+    "id": "jalarnavam",
+    "name_english": "Jalarnavam",
+    "name_telugu": "",
+    "melakarta_number": 38,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga1",
+      "Ma2",
+      "Pa",
+      "Da1",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da1",
+      "Pa",
+      "Ma2",
+      "Ga1",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga1",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "jhalavarali": {
+    "id": "jhalavarali",
+    "name_english": "Jhalavarali",
+    "name_telugu": "",
+    "melakarta_number": 39,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga1",
+      "Ma2",
+      "Pa",
+      "Da1",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da1",
+      "Pa",
+      "Ma2",
+      "Ga1",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga1",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "navaneetam": {
+    "id": "navaneetam",
+    "name_english": "Navaneetam",
+    "name_telugu": "",
+    "melakarta_number": 40,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga1",
+      "Ma2",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma2",
+      "Ga1",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga1",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "pavani": {
+    "id": "pavani",
+    "name_english": "Pavani",
+    "name_telugu": "",
+    "melakarta_number": 41,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga1",
+      "Ma2",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma2",
+      "Ga1",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga1",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "raghupriya": {
+    "id": "raghupriya",
+    "name_english": "Raghupriya",
+    "name_telugu": "",
+    "melakarta_number": 42,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga1",
+      "Ma2",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma2",
+      "Ga1",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga1",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "gavambhodhi": {
+    "id": "gavambhodhi",
+    "name_english": "Gavambhodhi",
+    "name_telugu": "",
+    "melakarta_number": 43,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da1",
+      "Ni1",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni1",
+      "Da1",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni1",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "bhavapriya": {
+    "id": "bhavapriya",
+    "name_english": "Bhavapriya",
+    "name_telugu": "",
+    "melakarta_number": 44,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da1",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da1",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "shubhapantuvarali": {
+    "id": "shubhapantuvarali",
+    "name_english": "Shubhapantuvarali",
+    "name_telugu": "",
+    "melakarta_number": 45,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da1",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da1",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "shadvidhamargini": {
+    "id": "shadvidhamargini",
+    "name_english": "Shadvidhamargini",
+    "name_telugu": "",
+    "melakarta_number": 46,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "suvarnangi": {
+    "id": "suvarnangi",
+    "name_english": "Suvarnangi",
+    "name_telugu": "",
+    "melakarta_number": 47,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "divyamani": {
+    "id": "divyamani",
+    "name_english": "Divyamani",
+    "name_telugu": "",
+    "melakarta_number": 48,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "dhavalambari": {
+    "id": "dhavalambari",
+    "name_english": "Dhavalambari",
+    "name_telugu": "",
+    "melakarta_number": 49,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da1",
+      "Ni1",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni1",
+      "Da1",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni1",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "namanarayani": {
+    "id": "namanarayani",
+    "name_english": "Namanarayani",
+    "name_telugu": "",
+    "melakarta_number": 50,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da1",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da1",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "kamavardhini": {
+    "id": "kamavardhini",
+    "name_english": "Kamavardhini",
+    "name_telugu": "",
+    "melakarta_number": 51,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da1",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da1",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "ramapriya": {
+    "id": "ramapriya",
+    "name_english": "Ramapriya",
+    "name_telugu": "",
+    "melakarta_number": 52,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "gamanashrama": {
+    "id": "gamanashrama",
+    "name_english": "Gamanashrama",
+    "name_telugu": "",
+    "melakarta_number": 53,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "vishwambari": {
+    "id": "vishwambari",
+    "name_english": "Vishwambari",
+    "name_telugu": "",
+    "melakarta_number": 54,
+    "arohanam": [
+      "Sa",
+      "Ri1",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri1",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri1",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "shamalangi": {
+    "id": "shamalangi",
+    "name_english": "Shamalangi",
+    "name_telugu": "",
+    "melakarta_number": 55,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da1",
+      "Ni1",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni1",
+      "Da1",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni1",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "shanmukhapriya": {
+    "id": "shanmukhapriya",
+    "name_english": "Shanmukhapriya",
+    "name_telugu": "",
+    "melakarta_number": 56,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da1",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da1",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": [
+      "veera"
+    ]
+  },
+  "simhendramadhyamam": {
+    "id": "simhendramadhyamam",
+    "name_english": "Simhendramadhyamam",
+    "name_telugu": "",
+    "melakarta_number": 57,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da1",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da1",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "hemavathi": {
+    "id": "hemavathi",
+    "name_english": "Hemavathi",
+    "name_telugu": "",
+    "melakarta_number": 58,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "dharmavathi": {
+    "id": "dharmavathi",
+    "name_english": "Dharmavathi",
+    "name_telugu": "",
+    "melakarta_number": 59,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "neethimathi": {
+    "id": "neethimathi",
+    "name_english": "Neethimathi",
+    "name_telugu": "",
+    "melakarta_number": 60,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "kantamani": {
+    "id": "kantamani",
+    "name_english": "Kantamani",
+    "name_telugu": "",
+    "melakarta_number": 61,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da1",
+      "Ni1",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni1",
+      "Da1",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni1",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "rishabhapriya": {
+    "id": "rishabhapriya",
+    "name_english": "Rishabhapriya",
+    "name_telugu": "",
+    "melakarta_number": 62,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da1",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da1",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "latangi": {
+    "id": "latangi",
+    "name_english": "Latangi",
+    "name_telugu": "",
+    "melakarta_number": 63,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da1",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da1",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "vachaspathi": {
+    "id": "vachaspathi",
+    "name_english": "Vachaspathi",
+    "name_telugu": "",
+    "melakarta_number": 64,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "mechakalyani": {
+    "id": "mechakalyani",
+    "name_english": "Mechakalyani",
+    "name_telugu": "",
+    "melakarta_number": 65,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": [
+      "shringara",
+      "bhakti"
+    ]
+  },
+  "chitrambari": {
+    "id": "chitrambari",
+    "name_english": "Chitrambari",
+    "name_telugu": "",
+    "melakarta_number": 66,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "sucharitra": {
+    "id": "sucharitra",
+    "name_english": "Sucharitra",
+    "name_telugu": "",
+    "melakarta_number": 67,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da1",
+      "Ni1",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni1",
+      "Da1",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni1",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "jyothiswarupini": {
+    "id": "jyothiswarupini",
+    "name_english": "Jyothiswarupini",
+    "name_telugu": "",
+    "melakarta_number": 68,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da1",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da1",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "dhathuvardhini": {
+    "id": "dhathuvardhini",
+    "name_english": "Dhathuvardhini",
+    "name_telugu": "",
+    "melakarta_number": 69,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da1",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da1",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da1",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "nasikabhushini": {
+    "id": "nasikabhushini",
+    "name_english": "Nasikabhushini",
+    "name_telugu": "",
+    "melakarta_number": 70,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "kosalam": {
+    "id": "kosalam",
+    "name_english": "Kosalam",
+    "name_telugu": "",
+    "melakarta_number": 71,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  },
+  "rasikapriya": {
+    "id": "rasikapriya",
+    "name_english": "Rasikapriya",
+    "name_telugu": "",
+    "melakarta_number": 72,
+    "arohanam": [
+      "Sa",
+      "Ri2",
+      "Ga2",
+      "Ma2",
+      "Pa",
+      "Da2",
+      "Ni2",
+      "Sa"
+    ],
+    "avarohanam": [
+      "Sa",
+      "Ni2",
+      "Da2",
+      "Pa",
+      "Ma2",
+      "Ga2",
+      "Ri2",
+      "Sa"
+    ],
+    "varja_svaras": [],
+    "characteristic_phrases": [
+      [
+        "Sa",
+        "Ri2",
+        "Ga2",
+        "Ma2"
+      ],
+      [
+        "Sa",
+        "Ni2",
+        "Da2",
+        "Pa"
+      ]
+    ],
+    "gamaka_rules": {},
+    "janya_of": null,
+    "rasa_tags": []
+  }
+}

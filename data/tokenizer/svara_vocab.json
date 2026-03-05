@@ -1,0 +1,13 @@
+{
+  "<pad>": 0, "<bos>": 1, "<eos>": 2,
+  "<raga>": 3, "<tala>": 4, "<section>": 5, "<kala>": 6,
+  "Sa": 7, "Ri1": 8, "Ri2": 9, "Ga1": 10, "Ga2": 11,
+  "Ma1": 12, "Ma2": 13, "Pa": 14, "Da1": 15, "Da2": 16,
+  "Ni1": 17, "Ni2": 18,
+  "<lower>": 19, "<middle>": 20, "<upper>": 21,
+  "<rest>": 22, "<sustain>": 23,
+  "<kampita>": 24, "<jaru>": 25, "<nokku>": 26, "<odukkal>": 27,
+  "<sphurita>": 28, "<pratyahata>": 29,
+  "pallavi": 30, "anupallavi": 31, "charanam": 32, "chittaswaram": 33,
+  "vilamba": 34, "madhyama": 35, "druta": 36
+}
