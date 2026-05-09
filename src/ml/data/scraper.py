@@ -643,6 +643,489 @@ class LocalRagaSynthesizer:
         return ragas
 
 
+try:
+    import yt_dlp  # type: ignore
+    import librosa  # type: ignore
+    import numpy as np  # type: ignore
+    HAS_YT_DEPS = True
+except ImportError:
+    HAS_YT_DEPS = False
+
+
+# Raga name patterns to search for in video titles / descriptions
+_RAGA_TITLE_PATTERNS: list[tuple[str, str]] = [
+    (r"\bshankar[a]?bharanam\b", "shankarabharanam"),
+    (r"\bkalyani\b", "kalyani"),
+    (r"\bkharaharapriya\b", "kharaharapriya"),
+    (r"\bharikhambhoji\b|\bharikambhoji\b", "harikambhoji"),
+    (r"\bmayamalavagowla\b|\bmayamalavagaula\b", "mayamalavagowla"),
+    (r"\bhanumatodi\b|\btodi\b", "hanumatodi"),
+    (r"\bkambhoji\b", "kambhoji"),
+    (r"\bbhairavi\b", "bhairavi"),
+    (r"\bmohanam\b", "mohanam"),
+    (r"\bhindolam\b", "hindolam"),
+    (r"\babhogi\b", "abhogi"),
+    (r"\bbilahari\b", "bilahari"),
+    (r"\bsahana\b", "sahana"),
+    (r"\banandabhairavi\b", "anandabhairavi"),
+    (r"\bkedaragowla\b", "kedaragowla"),
+    (r"\bsaveri\b", "saveri"),
+    (r"\barabhi\b", "arabhi"),
+    (r"\bdevagandhari\b", "devagandhari"),
+    (r"\bmadhyamavati\b|\bmadhyamavathi\b", "madhyamavati"),
+    (r"\bhamsadhwani\b|\bhamsadhvani\b", "hamsadhwani"),
+    (r"\bnatabhairavi\b", "natabhairavi"),
+    (r"\bbegada\b", "begada"),
+    (r"\bsri\b", "sri"),
+    (r"\brevati\b", "revati"),
+]
+
+
+def _detect_raga_from_text(text: str) -> str | None:
+    """Best-effort raga detection from a video title or description."""
+    text_lower = text.lower()
+    for pattern, raga_id in _RAGA_TITLE_PATTERNS:
+        if re.search(pattern, text_lower):
+            return raga_id
+    # Fall back to COMMON_RAGA_IDS word match
+    for name, raga_id in COMMON_RAGA_IDS.items():
+        if name in text_lower:
+            return raga_id
+    return None
+
+
+def _estimate_tonic_hz(pitches_hz: list[float]) -> float:
+    """Estimate tonic (Sa) from a pitch contour using histogram of pitch classes.
+
+    Strategy: the tonic is typically the most sustained note in a Carnatic piece.
+    We find the pitch class with the highest total duration and then pick the Hz
+    value at the median of all frames assigned to that class.
+    """
+    voiced = [p for p in pitches_hz if p > 60]
+    if len(voiced) < 50:
+        return 0.0
+
+    import numpy as np  # noqa: PLC0415
+
+    hz_arr = np.array(voiced, dtype=np.float64)
+    # Map each Hz to a pitch class (0-11) relative to 440 Hz reference
+    semitones = 12.0 * np.log2(hz_arr / 440.0)
+    pitch_classes = np.round(semitones).astype(int) % 12
+
+    # Find pitch class with most occurrences
+    counts = np.bincount(pitch_classes % 12, minlength=12)
+    dominant_pc = int(counts.argmax())
+
+    # Collect all Hz values in that pitch class and return their median
+    mask = pitch_classes % 12 == dominant_pc
+    return float(np.median(hz_arr[mask]))
+
+
+class YouTubeScraper:
+    """Extract Carnatic svara sequences from Creative Commons licensed YouTube videos.
+
+    Pipeline:
+      1. Search YouTube for Carnatic classical music (configurable queries)
+      2. Skip any video whose license field is not Creative Commons
+      3. Download the audio track only (no video) via yt-dlp
+      4. Extract pitch contour with librosa.pyin (probabilistic YIN)
+      5. Estimate the tonic frequency (Sa) from the pitch histogram
+      6. Convert pitch contour to canonical svara sequences in 30-second windows
+      7. Detect the raga from the video title / description
+
+    Only Creative Commons licensed content is processed — this is enforced by
+    inspecting the 'license' field returned by yt-dlp, not just assumed.
+
+    Requirements (installed automatically in the notebook):
+        yt-dlp >= 2024.1.1
+        librosa >= 0.10
+        numpy
+
+    Important:
+        Downloading copyrighted YouTube content violates YouTube's Terms of Service
+        and copyright law. This scraper is restricted to Creative Commons licensed
+        videos (filter: license contains 'Creative Commons').
+        Do NOT modify cc_only=True to False for bulk copyrighted content.
+    """
+
+    DELAY = 4.0  # seconds between downloads — be respectful
+
+    # Queries tuned for Carnatic classical music (NOT Telugu film songs)
+    DEFAULT_QUERIES: list[str] = [
+        "carnatic classical music raga concert",
+        "veena carnatic classical concert",
+        "carnatic vocal concert full",
+        "carnatic flute concert",
+        "carnatic violin concert",
+        "pallavi anupallavi carnatic",
+        "carnatic instrumental classical",
+        "karnatic music concert live",
+    ]
+
+    def __init__(self, output_dir: str = "/tmp/raagaai_yt"):
+        self.output_dir = Path(output_dir)
+        self.output_dir.mkdir(parents=True, exist_ok=True)
+
+    def scrape(
+        self,
+        max_videos: int = 30,
+        segment_secs: int = 30,
+        queries: list[str] | None = None,
+    ) -> list[dict]:
+        """Scrape CC-licensed Carnatic YouTube videos and return svara sequences.
+
+        Args:
+            max_videos: Maximum number of videos to download and process.
+            segment_secs: Seconds per extracted segment (shorter = more sequences).
+            queries: Override default search queries.
+
+        Returns:
+            List of {raga_id, section, svaras} dicts.
+        """
+        if not HAS_YT_DEPS:
+            logger.warning(
+                "yt-dlp / librosa not installed — skipping YouTube scraper. "
+                "Run: pip install yt-dlp librosa"
+            )
+            return []
+
+        queries = queries or self.DEFAULT_QUERIES
+        sequences: list[dict] = []
+        seen_ids: set[str] = set()
+
+        for query in queries:
+            if len(seen_ids) >= max_videos:
+                break
+            try:
+                video_metas = self._search(query, limit=max_videos - len(seen_ids))
+            except Exception:
+                logger.debug("YouTube search failed for %r", query, exc_info=True)
+                continue
+
+            for meta in video_metas:
+                if len(seen_ids) >= max_videos:
+                    break
+                vid_id = meta.get("id") or meta.get("webpage_url", "")
+                if vid_id in seen_ids:
+                    continue
+
+                # ── CC licence gate — no CC = skip immediately ────────────
+                license_str = (meta.get("license") or "").lower()
+                if "creative commons" not in license_str:
+                    logger.debug("Skipping %s — not CC licensed (%r)", vid_id, license_str)
+                    continue
+
+                seen_ids.add(vid_id)
+                title = meta.get("title", "")
+                description = meta.get("description", "") or ""
+                raga_id = _detect_raga_from_text(title + " " + description)
+
+                try:
+                    audio_path = self._download_audio(meta["webpage_url"], vid_id)
+                    seqs = self._audio_to_sequences(audio_path, raga_id, segment_secs)
+                    sequences.extend(seqs)
+                    logger.info(
+                        "YouTube: %s  raga=%s  seqs=%d", title[:60], raga_id, len(seqs)
+                    )
+                    time.sleep(self.DELAY)
+                except Exception:
+                    logger.debug("Failed video %s", vid_id, exc_info=True)
+
+        logger.info("YouTube scraper: %d sequences from %d videos", len(sequences), len(seen_ids))
+        return sequences
+
+    # ── Internal helpers ──────────────────────────────────────────────────────
+
+    def _search(self, query: str, limit: int) -> list[dict]:
+        """Return video metadata list for a YouTube search query."""
+        ydl_opts = {
+            "quiet": True,
+            "no_warnings": True,
+            "extract_flat": True,   # metadata only, no download
+            "skip_download": True,
+        }
+        url = f"ytsearch{min(limit * 3, 50)}:{query}"  # over-fetch to allow CC filtering
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(url, download=False)
+        entries = info.get("entries") or []
+        # Fetch full metadata (needed for license field) for each entry
+        full_metas = []
+        for entry in entries[:limit * 3]:
+            try:
+                with yt_dlp.YoutubeDL({"quiet": True, "no_warnings": True,
+                                        "skip_download": True}) as ydl:
+                    full = ydl.extract_info(entry["url"], download=False)
+                full_metas.append(full)
+            except Exception:
+                continue
+        return full_metas
+
+    def _download_audio(self, url: str, vid_id: str) -> Path:
+        """Download audio-only track. Returns path to WAV file."""
+        out_template = str(self.output_dir / f"{vid_id}.%(ext)s")
+        wav_path = self.output_dir / f"{vid_id}.wav"
+
+        if wav_path.exists():
+            return wav_path   # reuse if already downloaded
+
+        ydl_opts = {
+            "quiet": True,
+            "no_warnings": True,
+            "format": "bestaudio/best",
+            "outtmpl": out_template,
+            "postprocessors": [{
+                "key": "FFmpegExtractAudio",
+                "preferredcodec": "wav",
+                "preferredquality": "0",
+            }],
+        }
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            ydl.download([url])
+
+        if not wav_path.exists():
+            # yt-dlp may emit a different extension; find it
+            candidates = list(self.output_dir.glob(f"{vid_id}.*"))
+            if candidates:
+                return candidates[0]
+            raise FileNotFoundError(f"No audio file found for {vid_id}")
+        return wav_path
+
+    def _audio_to_sequences(
+        self, audio_path: Path, raga_id: str | None, segment_secs: int
+    ) -> list[dict]:
+        """Extract pitch contour from audio and convert to svara sequences."""
+        import numpy as _np  # noqa: PLC0415
+
+        y, sr = librosa.load(str(audio_path), sr=22050, mono=True)
+
+        # Probabilistic YIN pitch tracker — more accurate than basic YIN
+        f0, voiced_flag, _ = librosa.pyin(
+            y,
+            fmin=librosa.note_to_hz("C2"),
+            fmax=librosa.note_to_hz("C7"),
+            sr=sr,
+            frame_length=2048,
+        )
+        # Replace NaN (unvoiced) with 0
+        pitches_hz = _np.where(_np.isnan(f0), 0.0, f0).tolist()
+
+        tonic_hz = _estimate_tonic_hz(pitches_hz)
+        if tonic_hz <= 0:
+            return []
+
+        hop = librosa.time_to_frames(segment_secs, sr=sr, hop_length=512)
+        sequences: list[dict] = []
+        section_cycle = ["pallavi", "anupallavi", "charanam", "chittaswaram"]
+
+        for i, start in enumerate(range(0, len(pitches_hz) - hop, hop)):
+            segment = pitches_hz[start: start + hop]
+            svaras = DunyaFetcher._pitches_to_svaras(segment, tonic_hz)
+            if len(svaras) < 8:
+                continue
+            sequences.append({
+                "raga_id": raga_id or "unknown",
+                "section": section_cycle[i % len(section_cycle)],
+                "svaras": svaras,
+            })
+
+        return sequences
+
+
+class SoundCloudScraper:
+    """Extract Carnatic svara sequences from freely-licensed SoundCloud tracks.
+
+    Uses yt-dlp (which supports the ``scsearch:`` prefix for SoundCloud) for
+    track discovery and download, and librosa for pitch-to-svara conversion.
+    The same FFmpeg / librosa stack as YouTubeScraper is reused.
+
+    Licence policy:
+        SoundCloud tracks have a ``license`` field.  This scraper skips any
+        track whose licence is ``"all-rights-reserved"`` (fully copyrighted).
+        CC-BY, CC-BY-NC, CC-BY-SA, CC-BY-ND, CC0, and publicdomain tracks are
+        all accepted — they are freely usable for research / ML training.
+
+    Requirements: yt-dlp, librosa, ffmpeg  (installed by the notebook deps cell).
+    """
+
+    DELAY = 3.0
+    _BLOCKED_LICENSES = {"all-rights-reserved"}
+
+    DEFAULT_QUERIES: list[str] = [
+        "carnatic classical music raga",
+        "veena carnatic concert",
+        "carnatic vocal concert",
+        "karnatic music instrumental",
+        "carnatic flute raga",
+        "carnatic violin concert",
+        "pallavi carnatic classical",
+    ]
+
+    def __init__(self, output_dir: str = "/tmp/raagaai_sc"):
+        self.output_dir = Path(output_dir)
+        self.output_dir.mkdir(parents=True, exist_ok=True)
+
+    def scrape(
+        self,
+        max_tracks: int = 50,
+        segment_secs: int = 30,
+        queries: list[str] | None = None,
+    ) -> list[dict]:
+        """Search SoundCloud, download freely-licensed Carnatic tracks, return svara sequences.
+
+        Args:
+            max_tracks:   Maximum number of tracks to download and process.
+            segment_secs: Each track is split into fixed-length windows of this size.
+            queries:      Custom search queries; defaults to DEFAULT_QUERIES.
+
+        Returns:
+            List of {raga_id, section, svaras} dicts.
+        """
+        if not HAS_YT_DEPS:
+            logger.warning(
+                "yt-dlp / librosa not installed — skipping SoundCloud scraper."
+            )
+            return []
+
+        queries = queries or self.DEFAULT_QUERIES
+        sequences: list[dict] = []
+        seen_ids: set[str] = set()
+
+        for query in queries:
+            if len(seen_ids) >= max_tracks:
+                break
+            try:
+                metas = self._search(query, limit=max_tracks - len(seen_ids))
+            except Exception:
+                logger.debug("SC search failed for %r", query, exc_info=True)
+                continue
+
+            for meta in metas:
+                if len(seen_ids) >= max_tracks:
+                    break
+
+                track_id = str(meta.get("id") or meta.get("webpage_url", "unknown"))
+                if track_id in seen_ids:
+                    continue
+
+                # Licence gate — skip fully copyrighted tracks
+                license_str = (meta.get("license") or "all-rights-reserved").lower().strip()
+                if license_str in self._BLOCKED_LICENSES:
+                    logger.debug("Skipping SC track (ARR licence): %s", track_id)
+                    continue
+
+                seen_ids.add(track_id)
+                title = meta.get("title", "")
+                description = meta.get("description", "") or ""
+                raga_id = _detect_raga_from_text(title + " " + description)
+
+                try:
+                    audio_path = self._download_audio(
+                        meta["webpage_url"], f"sc_{track_id}"
+                    )
+                    seqs = self._audio_to_sequences(audio_path, raga_id, segment_secs)
+                    sequences.extend(seqs)
+                    logger.info(
+                        "SC: %-60s  licence=%-18s  raga=%-20s  seqs=%d",
+                        title[:60], license_str, raga_id, len(seqs),
+                    )
+                    time.sleep(self.DELAY)
+                except Exception:
+                    logger.debug("SC failed track %s", track_id, exc_info=True)
+
+        logger.info(
+            "SoundCloud: %d sequences from %d tracks", len(sequences), len(seen_ids)
+        )
+        return sequences
+
+    # ── Internal helpers ──────────────────────────────────────────────────────
+
+    def _search(self, query: str, limit: int) -> list[dict]:
+        """Return full track metadata for a SoundCloud search query."""
+        flat_opts = {
+            "quiet": True, "no_warnings": True,
+            "extract_flat": True, "skip_download": True,
+        }
+        sc_url = f"scsearch{min(limit * 3, 50)}:{query}"
+        with yt_dlp.YoutubeDL(flat_opts) as ydl:
+            info = ydl.extract_info(sc_url, download=False)
+
+        entries = info.get("entries") or []
+        full_metas: list[dict] = []
+        fetch_opts = {"quiet": True, "no_warnings": True, "skip_download": True}
+        for entry in entries[: limit * 3]:
+            try:
+                page_url = entry.get("url") or entry.get("webpage_url", "")
+                with yt_dlp.YoutubeDL(fetch_opts) as ydl:
+                    full_metas.append(ydl.extract_info(page_url, download=False))
+            except Exception:
+                continue
+        return full_metas
+
+    def _download_audio(self, url: str, track_id: str) -> Path:
+        """Download audio-only and convert to WAV. Returns the WAV path."""
+        wav_path = self.output_dir / f"{track_id}.wav"
+        if wav_path.exists():
+            return wav_path
+
+        ydl_opts = {
+            "quiet": True,
+            "no_warnings": True,
+            "format": "bestaudio/best",
+            "outtmpl": str(self.output_dir / f"{track_id}.%(ext)s"),
+            "postprocessors": [{
+                "key": "FFmpegExtractAudio",
+                "preferredcodec": "wav",
+                "preferredquality": "0",
+            }],
+        }
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            ydl.download([url])
+
+        if not wav_path.exists():
+            candidates = list(self.output_dir.glob(f"{track_id}.*"))
+            if candidates:
+                return candidates[0]
+            raise FileNotFoundError(f"No audio file produced for track {track_id}")
+        return wav_path
+
+    def _audio_to_sequences(
+        self, audio_path: Path, raga_id: str | None, segment_secs: int
+    ) -> list[dict]:
+        """Pitch-extract audio and return windowed svara sequences."""
+        import numpy as _np  # noqa: PLC0415
+
+        y, sr = librosa.load(str(audio_path), sr=22050, mono=True)
+        f0, _, _ = librosa.pyin(
+            y,
+            fmin=librosa.note_to_hz("C2"),
+            fmax=librosa.note_to_hz("C7"),
+            sr=sr,
+            frame_length=2048,
+        )
+        pitches_hz = _np.where(_np.isnan(f0), 0.0, f0).tolist()
+
+        tonic_hz = _estimate_tonic_hz(pitches_hz)
+        if tonic_hz <= 0:
+            return []
+
+        hop = librosa.time_to_frames(segment_secs, sr=sr, hop_length=512)
+        section_cycle = ["pallavi", "anupallavi", "charanam", "chittaswaram"]
+        sequences: list[dict] = []
+
+        for i, start in enumerate(range(0, len(pitches_hz) - hop, hop)):
+            svaras = DunyaFetcher._pitches_to_svaras(
+                pitches_hz[start: start + hop], tonic_hz
+            )
+            if len(svaras) < 8:
+                continue
+            sequences.append({
+                "raga_id": raga_id or "unknown",
+                "section": section_cycle[i % len(section_cycle)],
+                "svaras": svaras,
+            })
+        return sequences
+
+
 def augment_sequences(sequences: list[dict]) -> list[dict]:
     """Raga-preserving augmentation.
 
