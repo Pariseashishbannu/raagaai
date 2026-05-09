@@ -1,19 +1,23 @@
 """Build training dataset from all available Carnatic music data sources.
 
 Usage:
-    python -m scripts.build_dataset [--saraga-dir PATH] [--scrape-web] [--max-web-pages N]
+    python -m scripts.build_dataset \\
+        [--saraga-dir PATH] \\
+        [--scrape-karnatik] [--scrape-shivkumar] [--max-web-pages N] \\
+        [--dunya-token TOKEN | $DUNYA_TOKEN] [--dunya-recordings N]
 
-This script:
-  1. Generates synthetic sequences from local raga definitions (always)
-  2. Optionally parses Saraga dataset annotations (if --saraga-dir provided)
-  3. Optionally scrapes karnatik.com (if --scrape-web flag set)
-  4. Augments all sequences with transpositions and repetitions
-  5. Saves to data/training/svara_sequences.jsonl
+Sources merged into a single JSONL:
+  1. Synthetic sequences from local raga definitions (always)
+  2. Saraga 1.5 annotations (--saraga-dir, see docs/SARAGA.md)
+  3. karnatik.com krithi notations (--scrape-karnatik)
+  4. shivkumar.org krithi notations (--scrape-shivkumar)
+  5. CompMusic Dunya pitch contours (--dunya-token or DUNYA_TOKEN env var)
 """
 
 import argparse
 import json
 import logging
+import os
 import random
 from pathlib import Path
 
@@ -32,13 +36,35 @@ def main():
     parser.add_argument(
         "--scrape-web",
         action="store_true",
+        help="(Alias for --scrape-karnatik, kept for backwards compatibility)",
+    )
+    parser.add_argument(
+        "--scrape-karnatik",
+        action="store_true",
         help="Scrape karnatik.com for composition notation",
+    )
+    parser.add_argument(
+        "--scrape-shivkumar",
+        action="store_true",
+        help="Scrape shivkumar.org for krithi notation",
     )
     parser.add_argument(
         "--max-web-pages",
         type=int,
         default=50,
-        help="Max composition pages to scrape from karnatik.com",
+        help="Max pages to scrape per web source",
+    )
+    parser.add_argument(
+        "--dunya-token",
+        type=str,
+        default=None,
+        help="CompMusic Dunya API token (or set DUNYA_TOKEN env var)",
+    )
+    parser.add_argument(
+        "--dunya-recordings",
+        type=int,
+        default=100,
+        help="Max Dunya recordings to fetch",
     )
     parser.add_argument(
         "--synthetic-per-raga",
@@ -60,9 +86,11 @@ def main():
     args = parser.parse_args()
 
     from src.ml.data.scraper import (
+        DunyaFetcher,
         KarnatikScraper,
         LocalRagaSynthesizer,
         SaragaScraper,
+        ShivkumarScraper,
         augment_sequences,
     )
 
@@ -83,13 +111,30 @@ def main():
         all_sequences.extend(saraga_seqs)
         logger.info("  → %d Saraga sequences", len(saraga_seqs))
 
-    # 3. Web scraping (if requested)
-    if args.scrape_web:
+    # 3. karnatik.com
+    if args.scrape_web or args.scrape_karnatik:
         logger.info("Scraping karnatik.com (max %d pages)...", args.max_web_pages)
         karnatik = KarnatikScraper()
         web_seqs = karnatik.scrape(max_pages=args.max_web_pages)
         all_sequences.extend(web_seqs)
-        logger.info("  → %d web-scraped sequences", len(web_seqs))
+        logger.info("  → %d karnatik.com sequences", len(web_seqs))
+
+    # 4. shivkumar.org
+    if args.scrape_shivkumar:
+        logger.info("Scraping shivkumar.org (max %d pages)...", args.max_web_pages)
+        shiv = ShivkumarScraper()
+        shiv_seqs = shiv.scrape(max_pages=args.max_web_pages)
+        all_sequences.extend(shiv_seqs)
+        logger.info("  → %d shivkumar.org sequences", len(shiv_seqs))
+
+    # 5. Dunya API
+    dunya_token = args.dunya_token or os.environ.get("DUNYA_TOKEN")
+    if dunya_token:
+        logger.info("Fetching from Dunya (max %d recordings)...", args.dunya_recordings)
+        dunya = DunyaFetcher(dunya_token)
+        dunya_seqs = dunya.fetch(max_recordings=args.dunya_recordings)
+        all_sequences.extend(dunya_seqs)
+        logger.info("  → %d Dunya sequences", len(dunya_seqs))
 
     if not all_sequences:
         logger.error("No sequences collected! Check data sources.")

@@ -1,8 +1,4 @@
-"""Carnatic svara generation engine with neural model + rule-based fallback.
-
-If a trained SvaraTransformer checkpoint exists, uses neural generation with
-raga-constrained decoding. Otherwise falls back to the weighted random walk.
-"""
+"""Svara generation: neural model with raga-constrained decoding, or rule-based fallback."""
 
 import logging
 import random
@@ -27,7 +23,7 @@ class GeneratedSvaras:
 
 
 class CarnaticGPT:
-    """Svara generator: neural model with constrained decoding, or rule-based fallback."""
+    """Svara generator — tries neural model first, falls back to weighted random walk."""
 
     def __init__(
         self,
@@ -44,7 +40,7 @@ class CarnaticGPT:
         self._try_load_model(checkpoint_path)
 
     def _try_load_model(self, checkpoint_path: str) -> None:
-        """Attempt to load the trained neural model. Fail silently to fallback."""
+        """Load checkpoint if it exists. Silently no-ops on failure so fallback kicks in."""
         if not Path(checkpoint_path).exists():
             logger.info("No checkpoint at %s — using rule-based generation", checkpoint_path)
             return
@@ -90,7 +86,6 @@ class CarnaticGPT:
         kala: str,
         num_avartanams: int = 4,
     ) -> GeneratedSvaras:
-        """Generate a musically valid svara sequence."""
         raga = self.raga_engine.get_raga(raga_id)
         if not raga:
             raise ValueError(f"Unknown raga: {raga_id}")
@@ -146,52 +141,46 @@ class CarnaticGPT:
         kala: str,
         total_svaras: int,
     ) -> list[str]:
-        """Generate svaras using the trained Transformer with constrained decoding."""
         import torch
 
         tokenizer = self._tokenizer
         model = self._model
         device = self._device
 
-        # Build conditioning prefix
         prefix_ids = tokenizer.encode_conditioning(raga_id, tala_id, section, kala)
         input_tensor = torch.tensor([prefix_ids], device=device)
 
-        # Build logit mask for raga-constrained decoding
-        # Allow all non-svara tokens (special tokens, section markers, etc.)
-        # but restrict svara tokens to only those valid in this raga
-        allowed_svaras = raga.allowed_svaras
-        logit_mask = torch.zeros(tokenizer.vocab_size, device=device)
-
+        # Build a strict mask: only this raga's svaras are allowed.
+        # Mask EOS and all non-svara tokens (raga/tala/section/special) so the
+        # model can't terminate early or emit metadata into the body.
+        allowed_svaras = set(raga.allowed_svaras)
         svara_tokens = tokenizer.svara_tokens
+        logit_mask = torch.full((tokenizer.vocab_size,), float("-inf"), device=device)
         for svara in svara_tokens:
             tok_id = tokenizer.token_to_id.get(svara)
-            if tok_id is not None and svara not in allowed_svaras:
-                logit_mask[tok_id] = float("-inf")
+            if tok_id is not None and svara in allowed_svaras:
+                logit_mask[tok_id] = 0.0
 
-        # Generate
         generated = model.generate(
             input_tensor,
-            max_new_tokens=total_svaras + 5,  # Slight buffer
+            max_new_tokens=total_svaras + 8,
             temperature=0.8,
             top_k=15,
             logit_mask=logit_mask,
-            eos_token_id=tokenizer.eos_id,
+            eos_token_id=None,  # forced — mask above guarantees only svaras emit
         )
 
-        # Decode and extract only svara tokens
         all_tokens = tokenizer.decode(generated[0].cpu().tolist())
         svara_set = set(svara_tokens)
         svaras = [t for t in all_tokens if t in svara_set]
 
-        # Pad or truncate to exact length
+        # Should rarely trigger now — fall back to a random allowed svara
+        # rather than repeating the last (which produces audible drone).
         if len(svaras) < total_svaras:
-            # Pad by repeating the last few svaras
+            allowed_list = sorted(allowed_svaras)
             while len(svaras) < total_svaras:
-                svaras.append(svaras[-1] if svaras else "Sa")
-        svaras = svaras[:total_svaras]
-
-        return svaras
+                svaras.append(random.choice(allowed_list))
+        return svaras[:total_svaras]
 
     def _generate_walk(
         self,
@@ -200,7 +189,7 @@ class CarnaticGPT:
         section: str,
         total_svaras: int,
     ) -> list[str]:
-        """Weighted random walk through the raga's svara space (fallback)."""
+        """Rule-based fallback: weighted random walk with melodic heuristics."""
         arohanam = raga.arohanam
         avarohanam = raga.avarohanam
         allowed = list(raga.allowed_svaras)
@@ -231,11 +220,10 @@ class CarnaticGPT:
             if not candidates:
                 candidates = allowed
 
-            # Weight candidates based on musical heuristics
             weights = []
             for c in candidates:
                 w = 1.0
-                # Prefer stepwise motion
+                # stepwise motion sounds more natural
                 if current in arohanam and c in arohanam:
                     curr_idx = arohanam.index(current)
                     cand_idx = arohanam.index(c)
@@ -244,17 +232,16 @@ class CarnaticGPT:
                     elif abs(curr_idx - cand_idx) == 2:
                         w *= 1.5
 
-                # Sam (first beat) should land on important svaras
+                # sam (first beat) should land on strong svaras
                 if position and position.is_sam:
                     if c in ("Sa", "Pa"):
                         w *= 4.0
 
-                # Stress beats favor resting
                 if position and position.stress > 0.7:
                     if c == current:
                         w *= 1.5
 
-                # Characteristic phrases get boost
+                # boost characteristic gamakas / phrases of this raga
                 for phrase in raga.characteristic_phrases:
                     if len(svaras) >= len(phrase) - 1:
                         recent = svaras[-(len(phrase) - 1):]
@@ -263,11 +250,9 @@ class CarnaticGPT:
 
                 weights.append(w)
 
-            # Flip direction occasionally
             if random.random() < 0.15:
                 direction = "down" if direction == "up" else "up"
 
-            # Also flip near cycle boundaries
             if position and position.beat_in_cycle == 0:
                 direction = "down" if direction == "up" else "up"
 

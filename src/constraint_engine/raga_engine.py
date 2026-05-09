@@ -1,4 +1,4 @@
-"""Pure Python raga constraint engine — validates svara sequences against raga rules."""
+"""Raga constraint engine — loads raga definitions and validates svara sequences."""
 
 import json
 from pathlib import Path
@@ -28,7 +28,6 @@ class RagaSpec:
 
 
 class RagaEngine:
-    """Validates and constrains svara sequences according to raga lakshana rules."""
 
     def __init__(self, data_dir: str = "data/ragas"):
         self._ragas: dict[str, RagaSpec] = {}
@@ -57,7 +56,6 @@ class RagaEngine:
         return list(self._ragas.values())
 
     def validate(self, raga_id: str, svara_sequence: list[str]) -> bool:
-        """Check if a svara sequence is valid for the given raga."""
         raga = self._ragas.get(raga_id)
         if not raga:
             return False
@@ -69,7 +67,7 @@ class RagaEngine:
         return True
 
     def get_valid_next(self, raga_id: str, context: list[str]) -> list[str]:
-        """Return valid next svaras given current context, respecting arohanam/avarohanam."""
+        """Valid next svaras from context, biased toward arohanam/avarohanam neighbors."""
         raga = self._ragas.get(raga_id)
         if not raga:
             return []
@@ -81,13 +79,11 @@ class RagaEngine:
         last = context[-1]
         valid = []
 
-        # Determine ascending and descending neighbors
         arohanam_set = raga.arohanam
         avarohanam_set = raga.avarohanam
 
         if last in arohanam_set:
             idx = arohanam_set.index(last)
-            # Can go to next in arohanam
             if idx + 1 < len(arohanam_set):
                 valid.append(arohanam_set[idx + 1])
             if idx + 2 < len(arohanam_set):
@@ -95,13 +91,12 @@ class RagaEngine:
 
         if last in avarohanam_set:
             idx = avarohanam_set.index(last)
-            # Can go to next in avarohanam (descending)
             if idx + 1 < len(avarohanam_set):
                 valid.append(avarohanam_set[idx + 1])
             if idx + 2 < len(avarohanam_set):
                 valid.append(avarohanam_set[idx + 2])
 
-        # Also allow staying on same svara or jumping to Sa/Pa
+        # always allow staying, and jumping to vadi/samvadi (Sa, Pa)
         if last not in valid:
             valid.append(last)
         if "Sa" not in valid and "Sa" in allowed:
@@ -113,6 +108,6 @@ class RagaEngine:
         return [s for s in valid if s in allowed]
 
     def get_logit_mask(self, raga_id: str, context: list[str], vocab: list[str]) -> list[float]:
-        """Return logit mask: 0.0 for valid svaras, -inf for invalid."""
+        """0.0 for valid svaras, -inf for invalid — ready to add to logits."""
         valid = set(self.get_valid_next(raga_id, context))
         return [0.0 if tok in valid else float("-inf") for tok in vocab]

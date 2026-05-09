@@ -3,15 +3,20 @@
 Sources:
   1. Saraga Carnatic Dataset — svara phrase annotations from JSON metadata
   2. karnatik.com — composition notation pages (web scrape)
-  3. Local raga data — generate synthetic sequences from arohanam/avarohanam patterns
+  3. shivkumar.org — Carnatic krithi notation pages (web scrape)
+  4. CompMusic Dunya API — pitch contours + raga labels (needs free API token)
+  5. Local raga data — generate synthetic sequences from arohanam/avarohanam patterns
 """
 
 import json
 import logging
+import math
 import random
 import re
 import time
 from pathlib import Path
+from urllib import robotparser
+from urllib.parse import urldefrag, urljoin, urlparse
 
 try:
     import requests
@@ -281,6 +286,266 @@ class KarnatikScraper:
         return sequences
 
 
+PITCH_CLASS_TO_SVARA = {
+    0: "Sa", 1: "Ri1", 2: "Ri2", 3: "Ga2", 4: "Ga2", 5: "Ma1",
+    6: "Ma2", 7: "Pa", 8: "Da1", 9: "Da2", 10: "Ni1", 11: "Ni2",
+}
+
+
+def _polite_get(session, url: str, timeout: int = 15):
+    """GET with a real UA header. Caller handles errors."""
+    headers = {"User-Agent": "RaagaAI-DataCollector/0.1 (research; contact via repo)"}
+    return session.get(url, timeout=timeout, headers=headers)
+
+
+def _robots_allows(base: str, path: str = "/") -> bool:
+    """Check robots.txt for the User-Agent. Fail-open on network error."""
+    try:
+        rp = robotparser.RobotFileParser()
+        rp.set_url(urljoin(base, "/robots.txt"))
+        rp.read()
+        return rp.can_fetch("RaagaAI-DataCollector", urljoin(base, path))
+    except Exception:
+        return True
+
+
+class ShivkumarScraper:
+    """Scrape Carnatic krithi notations from shivkumar.org/music/."""
+
+    BASE_URL = "https://www.shivkumar.org/music/"
+    DELAY = 2.0
+
+    def scrape(self, max_pages: int = 100) -> list[dict]:
+        if not HAS_WEB_DEPS:
+            logger.warning("requests/beautifulsoup4 missing — skipping shivkumar.org")
+            return []
+        if not _robots_allows(self.BASE_URL):
+            logger.warning("robots.txt disallows scraping shivkumar.org — skipping")
+            return []
+
+        sequences: list[dict] = []
+        try:
+            session = requests.Session()
+            urls = self._discover_pages(session, max_pages)
+            logger.info("Found %d candidate pages on shivkumar.org", len(urls))
+            for url in urls[:max_pages]:
+                try:
+                    sequences.extend(self._parse_page(session, url))
+                    time.sleep(self.DELAY)
+                except Exception:
+                    logger.debug("Failed page %s", url, exc_info=True)
+        except Exception:
+            logger.warning("shivkumar.org scrape failed", exc_info=True)
+
+        logger.info("Scraped %d sequences from shivkumar.org", len(sequences))
+        return sequences
+
+    SKIP_EXT = (".mp3", ".pdf", ".doc", ".docx", ".ram", ".jpg", ".jpeg",
+                ".png", ".gif", ".zip", ".mid", ".midi")
+
+    def _discover_pages(self, session, limit: int) -> list[str]:
+        """2-level crawl: start at /music/, follow sub-index pages, collect krithi pages."""
+        host = urlparse(self.BASE_URL).netloc
+        seen_indices: set[str] = set()
+        notation_pages: list[str] = []
+        notation_seen: set[str] = set()
+        to_visit: list[str] = [self.BASE_URL]
+        cap = limit * 3
+
+        for _ in range(2):  # 2 levels deep
+            next_visit: list[str] = []
+            for url in to_visit:
+                if url in seen_indices:
+                    continue
+                seen_indices.add(url)
+                try:
+                    resp = _polite_get(session, url)
+                    resp.raise_for_status()
+                except Exception:
+                    continue
+                soup = BeautifulSoup(resp.text, "html.parser")
+                for link in soup.find_all("a", href=True):
+                    href = urljoin(url, link["href"])
+                    href, _ = urldefrag(href)
+                    low = href.lower()
+                    if urlparse(href).netloc != host:
+                        continue
+                    if low.endswith(self.SKIP_EXT):
+                        continue
+                    if not low.endswith((".htm", ".html")):
+                        continue
+                    if "/music/" not in low:
+                        continue
+                    if "index.htm" in low or "index.html" in low:
+                        if href not in seen_indices:
+                            next_visit.append(href)
+                    elif href not in notation_seen:
+                        notation_seen.add(href)
+                        notation_pages.append(href)
+                        if len(notation_pages) >= cap:
+                            return notation_pages
+                time.sleep(self.DELAY)
+            to_visit = next_visit
+        return notation_pages
+
+    def _parse_page(self, session, url: str) -> list[dict]:
+        resp = _polite_get(session, url)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "html.parser")
+        text = soup.get_text("\n")
+
+        # Match Raga, Ragam, Raaga, Raagam (with or without trailing 'm', single or double 'a')
+        raga_match = re.search(
+            r"[Rr]aa?gam?\s*[:\-]\s*([A-Za-z][A-Za-z\s]{2,30})", text
+        )
+        raga_name = raga_match.group(1).strip().lower() if raga_match else ""
+        # Strip trailing punctuation/braces and stray words
+        raga_name = re.split(r"[\s{(\[]", raga_name, maxsplit=1)[0].strip()
+
+        # Fallback: shivkumar URLs often encode raga as the last hyphen-segment of the filename,
+        # e.g. adigi-sukhamu-madhyamavathi.htm → "madhyamavathi"
+        if not raga_name:
+            stem = Path(urlparse(url).path).stem
+            parts = [p for p in re.split(r"[-_]", stem) if p]
+            if parts:
+                raga_name = parts[-1].lower()
+
+        raga_id = COMMON_RAGA_IDS.get(raga_name, raga_name if raga_name else "")
+        if not raga_id:
+            return []
+
+        section_map = {
+            "pallavi": "pallavi", "anupallavi": "anupallavi",
+            "charanam": "charanam", "charana": "charanam",
+            "chittaswaram": "chittaswaram", "chitta swaram": "chittaswaram",
+        }
+        current_section = "pallavi"
+        sequences: list[dict] = []
+        for line in text.split("\n"):
+            low = line.strip().lower()
+            for key, sec in section_map.items():
+                if key in low and len(low) < 30:
+                    current_section = sec
+                    break
+            svaras = parse_notation_string(line)
+            if len(svaras) >= 4:
+                sequences.append({
+                    "raga_id": raga_id,
+                    "section": current_section,
+                    "svaras": svaras,
+                })
+        return sequences
+
+
+class DunyaFetcher:
+    """Fetch pitch contours + raga labels from CompMusic Dunya Carnatic collection.
+
+    Requires a free API token from https://dunya.compmusic.upf.edu/user/profile/.
+    Pass it via the DUNYA_TOKEN env var or the constructor.
+    """
+
+    BASE = "https://dunya.compmusic.upf.edu/api/carnatic"
+    DELAY = 1.0
+
+    def __init__(self, token: str):
+        self.token = token
+
+    def fetch(self, max_recordings: int = 100, segment_len: int = 32) -> list[dict]:
+        if not HAS_WEB_DEPS:
+            logger.warning("requests not installed — skipping Dunya")
+            return []
+        if not self.token:
+            logger.warning("No Dunya token — skipping")
+            return []
+
+        session = requests.Session()
+        session.headers.update({
+            "Authorization": f"Token {self.token}",
+            "User-Agent": "RaagaAI-DataCollector/0.1",
+        })
+
+        sequences: list[dict] = []
+        try:
+            recordings = self._list_recordings(session, max_recordings)
+            logger.info("Dunya: %d recordings", len(recordings))
+            for rec in recordings:
+                try:
+                    seqs = self._process_recording(session, rec, segment_len)
+                    sequences.extend(seqs)
+                    time.sleep(self.DELAY)
+                except Exception:
+                    logger.debug("Dunya recording %s failed", rec.get("mbid"), exc_info=True)
+        except Exception:
+            logger.warning("Dunya fetch failed", exc_info=True)
+
+        logger.info("Dunya: %d svara sequences extracted", len(sequences))
+        return sequences
+
+    def _list_recordings(self, session, limit: int) -> list[dict]:
+        url = f"{self.BASE}/recording"
+        out: list[dict] = []
+        while url and len(out) < limit:
+            resp = session.get(url, timeout=30)
+            resp.raise_for_status()
+            data = resp.json()
+            out.extend(data.get("results", []))
+            url = data.get("next")
+            time.sleep(self.DELAY)
+        return out[:limit]
+
+    def _process_recording(self, session, rec: dict, segment_len: int) -> list[dict]:
+        mbid = rec.get("mbid")
+        if not mbid:
+            return []
+        meta_resp = session.get(f"{self.BASE}/recording/{mbid}", timeout=30)
+        meta_resp.raise_for_status()
+        meta = meta_resp.json()
+        raagas = meta.get("raaga", []) or meta.get("raagas", [])
+        if not raagas:
+            return []
+        raga_name = (raagas[0].get("name") or "").lower().strip()
+        raga_id = COMMON_RAGA_IDS.get(raga_name, raga_name.replace(" ", "_"))
+        if not raga_id:
+            return []
+
+        tonic_resp = session.get(f"{self.BASE}/recording/{mbid}/tonic", timeout=30)
+        if tonic_resp.status_code != 200:
+            return []
+        tonic_hz = float(tonic_resp.json())
+
+        pitch_resp = session.get(f"{self.BASE}/recording/{mbid}/pitch", timeout=60)
+        if pitch_resp.status_code != 200:
+            return []
+        pitch_data = pitch_resp.json()
+        pitches = [p[1] for p in pitch_data if isinstance(p, list) and len(p) >= 2]
+
+        svaras = self._pitches_to_svaras(pitches, tonic_hz)
+        if len(svaras) < segment_len:
+            return []
+
+        return [
+            {"raga_id": raga_id, "section": "pallavi", "svaras": svaras[i:i + segment_len]}
+            for i in range(0, len(svaras) - segment_len + 1, segment_len)
+        ]
+
+    @staticmethod
+    def _pitches_to_svaras(pitches: list[float], tonic_hz: float) -> list[str]:
+        if tonic_hz <= 0:
+            return []
+        out: list[str] = []
+        last_svara: str | None = None
+        for hz in pitches:
+            if hz <= 0:
+                continue
+            cents = 1200.0 * math.log2(hz / tonic_hz)
+            pc = int(round(cents / 100.0)) % 12
+            svara = PITCH_CLASS_TO_SVARA[pc]
+            if svara != last_svara:
+                out.append(svara)
+                last_svara = svara
+        return out
+
+
 class LocalRagaSynthesizer:
     """Generate synthetic training sequences from local raga definitions.
 
@@ -379,46 +644,46 @@ class LocalRagaSynthesizer:
 
 
 def augment_sequences(sequences: list[dict]) -> list[dict]:
-    """Augment training data with transpositions and phrase repetitions.
+    """Raga-preserving augmentation.
 
-    Transposition: shift all svaras up/down by N positions in the chromatic scale.
-    Repetition: repeat characteristic fragments within a sequence.
+    Chromatic transposition is intentionally NOT used: shifting svara indices in
+    [Sa, Ri1, Ri2, Ga1, Ga2, Ma1, Ma2, Pa, Da1, Da2, Ni1, Ni2] takes a sequence
+    out of its raga (e.g. shankarabharanam +1 maps Sa→Ri1, but Ri1 isn't in
+    shankarabharanam) — the result would carry a wrong raga label.
+
+    Augmentations applied (each preserves the original raga_id):
+      1. Sub-phrase repetition — repeat a random 4-svara window in place.
+      2. Sub-window sampling — extract two random contiguous slices.
     """
-    from src.core.constants import ALL_SVARAS
-
-    augmented = list(sequences)  # Keep originals
+    augmented = list(sequences)
 
     for seq in sequences:
         svaras = seq["svaras"]
+        raga_id = seq["raga_id"]
+        section = seq["section"]
 
-        # Transpose by shifting svara indices
-        for shift in [1, 2, -1, -2]:
-            transposed = []
-            valid = True
-            for s in svaras:
-                if s in ALL_SVARAS:
-                    idx = ALL_SVARAS.index(s)
-                    new_idx = (idx + shift) % len(ALL_SVARAS)
-                    transposed.append(ALL_SVARAS[new_idx])
-                else:
-                    valid = False
-                    break
-            if valid and len(transposed) >= 4:
-                augmented.append({
-                    "raga_id": seq["raga_id"],
-                    "section": seq["section"],
-                    "svaras": transposed,
-                })
-
-        # Repeat a random sub-phrase
+        # 1. Sub-phrase repetition
         if len(svaras) >= 8:
             start = random.randint(0, len(svaras) - 4)
             phrase = svaras[start:start + 4]
             repeated = svaras[:start] + phrase + phrase + svaras[start + 4:]
             augmented.append({
-                "raga_id": seq["raga_id"],
-                "section": seq["section"],
-                "svaras": repeated[:64],  # Cap length
+                "raga_id": raga_id,
+                "section": section,
+                "svaras": repeated[:64],
             })
+
+        # 2. Sub-window sampling — two random contiguous slices
+        if len(svaras) >= 16:
+            for _ in range(2):
+                window_len = random.randint(16, min(48, len(svaras)))
+                if window_len >= len(svaras):
+                    continue  # would just duplicate the original
+                start = random.randint(0, len(svaras) - window_len)
+                augmented.append({
+                    "raga_id": raga_id,
+                    "section": section,
+                    "svaras": svaras[start:start + window_len],
+                })
 
     return augmented
