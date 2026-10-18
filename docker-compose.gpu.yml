@@ -1,0 +1,66 @@
+# GPU overlay: adds an ACE-Step 1.5 server so songs get realistic vocals.
+#
+#   docker compose -f docker-compose.prod.yml -f docker-compose.gpu.yml up -d --build
+#
+# Needs the NVIDIA Container Toolkit. The ACE-Step image is pulled from GHCR, or
+# built from a checkout at ../ACE-Step-1.5 (override with ACESTEP_DIR).
+# First start downloads ~10 GB of models into the acestep_checkpoints volume.
+
+services:
+  acestep:
+    image: ghcr.io/ace-step/ace-step-1.5:latest
+    build:
+      context: ${ACESTEP_DIR:-../ACE-Step-1.5}
+    environment:
+      - ACESTEP_MODE=api
+      - ACESTEP_API_HOST=0.0.0.0
+      - ACESTEP_CONFIG_PATH=${ACESTEP_MODEL:-acestep-v15-base}
+      - ACESTEP_INIT_LLM=false          # cover mode never uses the 5Hz LM
+      - ACESTEP_LM_MODEL_PATH=
+      # The base model (~5 GB) doesn't fit a 4 GB GPU; offload keeps it running
+      - ACESTEP_OFFLOAD_TO_CPU=${ACESTEP_OFFLOAD:-true}
+      - ACESTEP_OFFLOAD_DIT_TO_CPU=${ACESTEP_OFFLOAD:-true}
+      - ACESTEP_API_KEY=${ACESTEP_API_KEY:-}
+      - TOKENIZERS_PARALLELISM=false
+      - NVIDIA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    ports:
+      - "8001:8001"
+    volumes:
+      - acestep_checkpoints:/app/checkpoints
+      - acestep_hf_cache:/root/.cache/huggingface
+    shm_size: "2gb"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8001/health > /dev/null || exit 1"]
+      interval: 30s
+      timeout: 10s
+      start_period: 1800s               # first boot downloads the models
+      retries: 5
+
+  # The app reaches ACE-Step over the compose network; it falls back to synth
+  # audio while ACE-Step is still starting, so no depends_on here.
+  api:
+    environment:
+      - ACESTEP_API_URL=http://acestep:8001
+      - ACESTEP_MODEL=${ACESTEP_MODEL:-acestep-v15-base}
+      - ACESTEP_INFERENCE_STEPS=${ACESTEP_INFERENCE_STEPS:-50}
+
+  worker:
+    environment:
+      - ACESTEP_API_URL=http://acestep:8001
+      - ACESTEP_MODEL=${ACESTEP_MODEL:-acestep-v15-base}
+      - ACESTEP_INFERENCE_STEPS=${ACESTEP_INFERENCE_STEPS:-50}
+    volumes:
+      # Your trained svara transformer: put svara_transformer.pt + tokenizer_vocab.json here
+      - ./data/models:/app/data/models
+
+volumes:
+  acestep_checkpoints:
+  acestep_hf_cache:

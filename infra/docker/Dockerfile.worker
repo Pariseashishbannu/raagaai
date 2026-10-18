@@ -6,8 +6,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libsndfile1 ffmpeg && \
     rm -rf /var/lib/apt/lists/*
 
+# CPU torch is enough for the small SvaraTransformer (data/models/svara_transformer.pt)
+RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
 COPY pyproject.toml .
-RUN pip install --no-cache-dir -e .
+RUN pip install --no-cache-dir -e ".[performer]"
 
 COPY . .
 

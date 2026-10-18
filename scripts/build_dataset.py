@@ -13,6 +13,8 @@ Sources merged into a single JSONL:
   4. shivkumar.org krithi notations (--scrape-shivkumar)
   5. CompMusic Dunya pitch contours (--dunya-token or DUNYA_TOKEN env var)
   6. Hugging Face datasets (--hf lakh maestro classical-midi kaumudi-ragas)
+  7. Local audio recordings (--audio FILE_OR_DIR ...) via pitch tracking
+  8. Pre-built sequence files (--include-jsonl FILE ...), e.g. audio extracted earlier
 """
 
 import argparse
@@ -79,6 +81,25 @@ def main():
         type=int,
         default=5000,
         help="Max songs/files to read per Hugging Face MIDI source",
+    )
+    parser.add_argument(
+        "--audio",
+        nargs="*",
+        default=[],
+        metavar="PATH",
+        help="Audio files or folders (mp3/wav/flac/...) to pitch-track into svaras",
+    )
+    parser.add_argument(
+        "--separate-vocals",
+        action="store_true",
+        help="Isolate vocals with demucs (if installed) before pitch tracking",
+    )
+    parser.add_argument(
+        "--include-jsonl",
+        nargs="*",
+        default=[],
+        metavar="FILE",
+        help="Merge sequences from JSONL files built earlier (missing files are skipped)",
     )
     parser.add_argument(
         "--no-synthetic",
@@ -165,6 +186,23 @@ def main():
             all_sequences.extend(hf.fetch(
                 source, max_songs=args.hf_max_songs, per_raga=args.synthetic_per_raga,
             ))
+
+    # 7. Local audio recordings
+    if args.audio:
+        from src.ml.data.audio_source import AudioFetcher
+
+        all_sequences.extend(AudioFetcher(separate_vocals=args.separate_vocals).fetch(args.audio))
+
+    # 8. Pre-built sequence files
+    for jsonl in args.include_jsonl:
+        path = Path(jsonl)
+        if not path.exists():
+            logger.warning("skipping missing %s", path)
+            continue
+        with open(path, encoding="utf-8") as f:
+            included = [json.loads(line) for line in f if line.strip()]
+        all_sequences.extend(included)
+        logger.info("  → %d sequences from %s", len(included), path.name)
 
     if not all_sequences:
         logger.error("No sequences collected! Check data sources.")

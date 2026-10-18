@@ -1,0 +1,11 @@
+.git
+.venv
+.venv-gpu
+**/node_modules
+frontend/dist
+data/audio
+data/training
+out
+**/__pycache__
+.pytest_cache
+.ruff_cache
