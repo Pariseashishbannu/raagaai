@@ -31,6 +31,38 @@ SECTION_DYNAMICS = {
 SECTION_PAUSE = 0.5
 
 
+def song_arrangement(svara_sections: dict[str, list[str]]) -> list[tuple[str, str]]:
+    """Song-mode performance order as (segment label, svara_sections key) pairs.
+
+    Shared by the synth and by anything that must line up with its output
+    (e.g. a lyric sheet for the rendered guide track).
+    """
+    order: list[tuple[str, str]] = []
+    charanams = sorted(k for k in svara_sections if k.startswith("charanam"))
+    has_pallavi = "pallavi" in svara_sections
+    has_anupallavi = "anupallavi" in svara_sections
+
+    if has_pallavi:
+        order += [("intro", "pallavi"), ("pallavi", "pallavi")]   # intro + verse 1
+    if has_anupallavi:
+        order.append(("anupallavi", "anupallavi"))                # chorus hook
+    if charanams:
+        order.append(("charanam", charanams[0]))                  # verse 2
+    if has_anupallavi:
+        order.append(("anupallavi", "anupallavi"))                # chorus repeat
+    if has_pallavi:
+        order.append(("pallavi", "pallavi"))                      # pallavi reprise
+    if len(charanams) > 1:                                         # bridge
+        order.append(("charanam", charanams[1]))
+    elif "chittaswaram" in svara_sections:
+        order.append(("chittaswaram", "chittaswaram"))
+    if has_anupallavi:
+        order.append(("anupallavi", "anupallavi"))                # final chorus
+    if has_pallavi:
+        order.append(("outro", "pallavi"))
+    return order
+
+
 class AudioOutput:
     def __init__(self, wav_bytes: bytes, duration_seconds: int, sample_rate: int,
                  svara_sequence: list[str]):
@@ -202,48 +234,13 @@ class SynthesisPipeline:
     ) -> list[tuple[str, list[str]]]:
         """Arrange in verse-chorus-verse-chorus song structure with labeled segments."""
         segments: list[tuple[str, list[str]]] = []
-        charanams = sorted(k for k in svara_sections if k.startswith("charanam"))
-
-        # Intro — first few notes of pallavi, gentle opening
-        if "pallavi" in svara_sections:
-            intro = svara_sections["pallavi"][:8]
-            segments.append(("intro", intro))
-
-        # Verse 1 (pallavi) — full section
-        if "pallavi" in svara_sections:
-            segments.append(("pallavi", svara_sections["pallavi"]))
-
-        # Chorus (anupallavi as the hook)
-        if "anupallavi" in svara_sections:
-            segments.append(("anupallavi", svara_sections["anupallavi"]))
-
-        # Verse 2 (first charanam)
-        if charanams:
-            segments.append(("charanam", svara_sections[charanams[0]]))
-
-        # Chorus repeat
-        if "anupallavi" in svara_sections:
-            segments.append(("anupallavi", svara_sections["anupallavi"]))
-
-        # Pallavi reprise — builds familiarity
-        if "pallavi" in svara_sections:
-            segments.append(("pallavi", svara_sections["pallavi"]))
-
-        # Bridge (second charanam or chittaswaram)
-        if len(charanams) > 1:
-            segments.append(("charanam", svara_sections[charanams[1]]))
-        elif "chittaswaram" in svara_sections:
-            segments.append(("chittaswaram", svara_sections["chittaswaram"]))
-
-        # Final chorus
-        if "anupallavi" in svara_sections:
-            segments.append(("anupallavi", svara_sections["anupallavi"]))
-
-        # Outro — last few pallavi notes fading out
-        if "pallavi" in svara_sections:
-            outro = svara_sections["pallavi"][-6:]
-            segments.append(("outro", outro))
-
+        for label, key in song_arrangement(svara_sections):
+            svaras = svara_sections[key]
+            if label == "intro":
+                svaras = svaras[:8]    # first few pallavi notes, gentle opening
+            elif label == "outro":
+                svaras = svaras[-6:]   # last few pallavi notes fading out
+            segments.append((label, svaras))
         return segments
 
     def _arrange_sections(

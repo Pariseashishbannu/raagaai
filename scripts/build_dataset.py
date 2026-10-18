@@ -12,6 +12,7 @@ Sources merged into a single JSONL:
   3. karnatik.com krithi notations (--scrape-karnatik)
   4. shivkumar.org krithi notations (--scrape-shivkumar)
   5. CompMusic Dunya pitch contours (--dunya-token or DUNYA_TOKEN env var)
+  6. Hugging Face datasets (--hf lakh maestro classical-midi kaumudi-ragas)
 """
 
 import argparse
@@ -67,6 +68,24 @@ def main():
         help="Max Dunya recordings to fetch",
     )
     parser.add_argument(
+        "--hf",
+        nargs="*",
+        default=[],
+        metavar="SOURCE",
+        help="Hugging Face sources: lakh, maestro, classical-midi, kaumudi-ragas",
+    )
+    parser.add_argument(
+        "--hf-max-songs",
+        type=int,
+        default=5000,
+        help="Max songs/files to read per Hugging Face MIDI source",
+    )
+    parser.add_argument(
+        "--no-synthetic",
+        action="store_true",
+        help="Skip local synthetic sequences (e.g. for a MIDI-only pretraining set)",
+    )
+    parser.add_argument(
         "--synthetic-per-raga",
         type=int,
         default=200,
@@ -96,12 +115,13 @@ def main():
 
     all_sequences: list[dict] = []
 
-    # 1. Always generate synthetic sequences from local raga data
-    logger.info("Generating synthetic sequences from local raga definitions...")
-    synth = LocalRagaSynthesizer("data/ragas")
-    synthetic = synth.synthesize(sequences_per_raga=args.synthetic_per_raga)
-    all_sequences.extend(synthetic)
-    logger.info("  → %d synthetic sequences", len(synthetic))
+    # 1. Synthetic sequences from local raga data
+    if not args.no_synthetic:
+        logger.info("Generating synthetic sequences from local raga definitions...")
+        synth = LocalRagaSynthesizer("data/ragas")
+        synthetic = synth.synthesize(sequences_per_raga=args.synthetic_per_raga)
+        all_sequences.extend(synthetic)
+        logger.info("  → %d synthetic sequences", len(synthetic))
 
     # 2. Saraga dataset (if available)
     if args.saraga_dir:
@@ -135,6 +155,16 @@ def main():
         dunya_seqs = dunya.fetch(max_recordings=args.dunya_recordings)
         all_sequences.extend(dunya_seqs)
         logger.info("  → %d Dunya sequences", len(dunya_seqs))
+
+    # 6. Hugging Face datasets
+    if args.hf:
+        from src.ml.data.hf_sources import HuggingFaceFetcher
+
+        hf = HuggingFaceFetcher()
+        for source in args.hf:
+            all_sequences.extend(hf.fetch(
+                source, max_songs=args.hf_max_songs, per_raga=args.synthetic_per_raga,
+            ))
 
     if not all_sequences:
         logger.error("No sequences collected! Check data sources.")

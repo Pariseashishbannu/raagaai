@@ -4,6 +4,7 @@ Usage:
     python -m scripts.train_model
     python -m scripts.train_model --epochs 100 --batch-size 64 --grad-accum 2
     python -m scripts.train_model --resume data/models/svara_transformer.pt
+    python -m scripts.train_model --finetune pretrained.pt --data carnatic.jsonl --lr 1e-4
 
 Run build_dataset.py first to generate data/training/svara_sequences.jsonl.
 """
@@ -109,6 +110,10 @@ def main():
     parser.add_argument("--data", default="data/training/svara_sequences.jsonl")
     parser.add_argument("--output-dir", default="data/models")
     parser.add_argument("--resume", default=None, help="Resume from checkpoint path")
+    parser.add_argument(
+        "--finetune", default=None,
+        help="Start from these weights with a fresh optimizer/LR schedule (new data)",
+    )
     parser.add_argument("--epochs", type=int, default=50)
     parser.add_argument("--batch-size", type=int, default=32)
     parser.add_argument("--grad-accum", type=int, default=1, help="Gradient accumulation steps")
@@ -154,6 +159,15 @@ def main():
     if args.resume and Path(args.resume).exists():
         logger.info("resuming from %s", args.resume)
         ckpt = torch.load(args.resume, map_location=device, weights_only=False)
+    elif args.finetune:
+        logger.info("fine-tuning from %s", args.finetune)
+        ckpt = torch.load(args.finetune, map_location=device, weights_only=False)
+        # Architecture comes from the checkpoint; saved config must describe this model
+        cfg = ckpt["config"]
+        args.embed_dim = cfg.get("embed_dim", args.embed_dim)
+        args.num_heads = cfg.get("num_heads", args.num_heads)
+        args.num_layers = cfg.get("num_layers", args.num_layers)
+        args.max_seq_len = cfg.get("max_seq_len", args.max_seq_len)
 
     tokenizer = SvaraTokenizer()
     if ckpt is not None and "tokenizer_vocab" in ckpt:
@@ -197,9 +211,24 @@ def main():
             dropout=args.dropout,
         ).to(device)
         model.load_state_dict(ckpt["model_state_dict"])
-        start_epoch = ckpt.get("epoch", 0) + 1
-        best_val_loss = ckpt.get("val_loss", float("inf"))
-        logger.info("resumed at epoch %d (best val_loss=%.4f)", start_epoch, best_val_loss)
+        if args.finetune:
+            # New data may bring new raga tokens; grow the (tied) embedding, keeping old rows
+            if tokenizer.vocab_size > cfg["vocab_size"]:
+                old_emb = model.token_emb.weight.data
+                new_emb = torch.nn.Embedding(
+                    tokenizer.vocab_size, old_emb.shape[1], padding_idx=0
+                ).to(device)
+                torch.nn.init.normal_(new_emb.weight, mean=0.0, std=0.02)
+                new_emb.weight.data[:cfg["vocab_size"]] = old_emb
+                model.token_emb = new_emb
+                model.head.weight = new_emb.weight
+                model.vocab_size = tokenizer.vocab_size
+                logger.info("vocab grown %d → %d", cfg["vocab_size"], tokenizer.vocab_size)
+            ckpt = None  # fresh optimizer, scaler and LR schedule
+        else:
+            start_epoch = ckpt.get("epoch", 0) + 1
+            best_val_loss = ckpt.get("val_loss", float("inf"))
+            logger.info("resumed at epoch %d (best val_loss=%.4f)", start_epoch, best_val_loss)
     else:
         model = SvaraTransformer(
             vocab_size=tokenizer.vocab_size,

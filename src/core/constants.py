@@ -48,12 +48,13 @@ class Section(str, Enum):
 
 # Chromatic semitone positions (Sa = 0)
 SVARA_SEMITONES: dict[str, int] = {
-    "Sa": 0, "Ri1": 1, "Ri2": 2, "Ga1": 2, "Ga2": 3,
+    "Sa": 0, "Ri1": 1, "Ri2": 2, "Ga1": 3, "Ga2": 4,
     "Ma1": 5, "Ma2": 6, "Pa": 7, "Da1": 8, "Da2": 9,
-    "Ni1": 9, "Ni2": 10,
+    "Ni1": 10, "Ni2": 11,
 }
 
-# Note: Ri2 == Ga1 (enharmonic), Da2 == Ni1 (enharmonic) in Carnatic system
+# The 12 names map one-to-one onto the 12 semitones, matching how data/ragas spells
+# ragas (e.g. shankarabharanam = Sa Ri2 Ga2 Ma1 Pa Da2 Ni2 = 0 2 4 5 7 9 11).
 
 # All 16 svara positions in order
 ALL_SVARAS = ["Sa", "Ri1", "Ri2", "Ga1", "Ga2", "Ma1", "Ma2", "Pa", "Da1", "Da2", "Ni1", "Ni2"]
