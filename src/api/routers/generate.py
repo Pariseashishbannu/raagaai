@@ -6,6 +6,7 @@ in a background thread to avoid needing a separate worker process.
 
 import json
 import logging
+import os
 import threading
 import uuid
 from datetime import datetime, timezone
@@ -43,75 +44,37 @@ def _has_celery_workers() -> bool:
         return False
 
 
+def _save_local(job_id: str, wav_bytes: bytes, filename: str) -> str:
+    """Dev-mode storage: data/audio/<job_id>/<filename>, served by the audio route."""
+    audio_dir = os.path.join("data", "audio", job_id)
+    os.makedirs(audio_dir, exist_ok=True)
+    with open(os.path.join(audio_dir, filename), "wb") as f:
+        f.write(wav_bytes)
+    return f"{job_id}/{filename}"
+
+
 def _run_sync(job_id: str, params: dict) -> None:
     """Run the generation pipeline synchronously in a thread."""
-    from src.workers.tasks.generate_composition import (
-        _raga_engine, _tala_engine, _svara_gen, _sahityam_gen, _synth_pipeline,
-        _update_status,
-    )
+    from src.workers.pipeline import run_pipeline
+    from src.workers.tasks.generate_composition import _update_status
 
     try:
-        raga_id = params["raga_id"]
-        tala_id = params["tala_id"]
-        kala = params.get("kala", "madhyama")
-        sections = params.get("sections", 3)
-        theme = params.get("theme", "devotional")
-
-        _update_status(job_id, "processing", "composing_melody", 0.3)
-        section_results = _svara_gen.generate_full_composition(
-            raga_id=raga_id, tala_id=tala_id, kala=kala,
-            num_charanams=max(sections - 2, 1),
-            include_chittaswaram=params.get("include_chittaswaram", False),
-        )
-
-        svara_sections = {}
-        for gs in section_results:
-            key = gs.section
-            if key in svara_sections:
-                count = sum(1 for k in svara_sections if k.startswith(key))
-                key = f"{key}_{count + 1}"
-            svara_sections[key] = gs.svaras
-
-        all_svaras = [s for gs in section_results for s in gs.svaras]
-
-        _update_status(job_id, "processing", "writing_lyrics", 0.5)
-        song_result = _sahityam_gen.generate_song(
-            svara_sections=svara_sections, raga_id=raga_id, theme=theme,
-        )
-
-        _update_status(job_id, "processing", "producing_audio", 0.7)
-        audio_output = _synth_pipeline.render(
-            svara_sections=svara_sections, raga_id=raga_id, tala_id=tala_id,
-            kala=kala, structure=params.get("structure", "song"),
-            use_vocoder=params.get("vocoder", None),
-        )
-
-        # Save audio locally instead of MinIO for dev mode
-        import os
-        audio_dir = os.path.join("data", "audio", job_id)
-        os.makedirs(audio_dir, exist_ok=True)
-        audio_path = os.path.join(audio_dir, "composition.wav")
-        with open(audio_path, "wb") as f:
-            f.write(audio_output.wav_bytes)
-
-        result = {
-            "audio_key": f"{job_id}/composition.wav",
-            "duration_seconds": audio_output.duration_seconds,
-            "svara_sequence": audio_output.svara_sequence[:200],
-            "sahityam": song_result.full_text,
-            "sahityam_sections": song_result.sections,
-            "song_title": song_result.title,
-            "raga_id": raga_id,
-            "tala_id": tala_id,
-            "kala": kala,
-        }
-
+        result = run_pipeline(job_id, params, _update_status, _save_local)
         _update_status(job_id, "completed", None, 1.0, result=result)
-        logger.info("generation.completed job_id=%s", job_id)
-
     except Exception as e:
         logger.error("generation.failed job_id=%s error=%s", job_id, e)
         _update_status(job_id, "failed", None, 0.0, error=str(e))
+
+
+def _audio_url(audio_key: str) -> str:
+    """Local file if it exists (dev/sync mode), otherwise a MinIO presigned URL."""
+    if os.path.exists(os.path.join("data", "audio", audio_key)):
+        return f"/api/v1/audio/{audio_key}"
+    try:
+        from src.storage.client import get_presigned_url
+        return get_presigned_url(settings.MINIO_BUCKET_AUDIO, audio_key)
+    except Exception:
+        return f"/api/v1/audio/{audio_key}"
 
 
 @router.post("", response_model=GenerationResponse)
@@ -188,21 +151,11 @@ async def get_job_status(job_id: str):
     result = None
     if job_data.get("result"):
         res = job_data["result"]
-        audio_key = res.get("audio_key", "")
-        # Use local file if it exists (dev/sync mode), otherwise try MinIO
-        import os
-        local_path = os.path.join("data", "audio", audio_key)
-        if os.path.exists(local_path):
-            audio_url = f"/api/v1/audio/{audio_key}"
-        else:
-            try:
-                from src.storage.client import get_presigned_url
-                audio_url = get_presigned_url(settings.MINIO_BUCKET_AUDIO, audio_key)
-            except Exception:
-                audio_url = f"/api/v1/audio/{audio_key}"
-
+        guide_key = res.get("guide_audio_key")
         result = CompositionResult(
-            audio_url=audio_url,
+            audio_url=_audio_url(res.get("audio_key", "")),
+            guide_audio_url=_audio_url(guide_key) if guide_key else None,
+            raga_score=res.get("raga_score"),
             song_title=res.get("song_title"),
             sahityam=res.get("sahityam"),
             sahityam_sections=res.get("sahityam_sections"),
@@ -212,6 +165,8 @@ async def get_job_status(job_id: str):
                 "tala_id": res.get("tala_id"),
                 "kala": res.get("kala"),
                 "duration_seconds": res.get("duration_seconds"),
+                "performed_by": res.get("performed_by", "synth"),
+                "guide_raga_score": res.get("guide_raga_score"),
             },
         )
 

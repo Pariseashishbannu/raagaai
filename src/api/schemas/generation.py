@@ -20,6 +20,12 @@ class GenerationRequest(BaseModel):
     include_chittaswaram: bool = Field(default=False)
     sections: int = Field(default=3, ge=1, le=5, description="Number of charanams")
     structure: str = Field(default="song", pattern="^(traditional|song)$")
+    realistic: bool = Field(default=True, description="Re-perform with ACE-Step vocals")
+    voice: str = Field(default="female", pattern="^(female|male)$")
+    cover_strength: float = Field(
+        default=0.7, ge=0.3, le=0.95,
+        description="How closely the performance follows the raga guide melody",
+    )
 
 
 class GenerationResponse(BaseModel):
@@ -36,6 +42,8 @@ class CompositionResult(BaseModel):
     sahityam_sections: dict | None = None
     svara_sequence: list[str] | None = None
     metadata: dict | None = None
+    guide_audio_url: str | None = None
+    raga_score: float | None = None
 
 
 class JobStatus(BaseModel):

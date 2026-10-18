@@ -23,6 +23,16 @@ class Settings(BaseSettings):
     MINIO_BUCKET_TRAINING: str = "raaga-training-data"
 
     VOCODER_ENABLED: bool = False
+
+    # ACE-Step 1.5 API server for realistic vocals (empty = synth audio only)
+    ACESTEP_API_URL: str = ""
+    ACESTEP_API_KEY: str = ""
+    ACESTEP_TIMEOUT_S: int = 900
+    ACESTEP_CANDIDATES: int = 2
+    # base: 50 steps + CFG (fine-tunable, used for the demo); turbo: 8 steps, no CFG
+    ACESTEP_MODEL: str = "acestep-v15-base"
+    ACESTEP_INFERENCE_STEPS: int = 50
+    ACESTEP_GUIDANCE_SCALE: float = 7.0
     COLLECT_TRAINING_DATA: bool = False
 
     JWT_SECRET: str = "change-me-jwt"

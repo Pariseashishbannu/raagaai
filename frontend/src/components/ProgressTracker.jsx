@@ -5,6 +5,7 @@ const STAGES = [
   { key: 'composing_melody', label: 'Composing Melody', icon: '🎼' },
   { key: 'writing_lyrics', label: 'Writing Telugu Lyrics', icon: '📝' },
   { key: 'producing_audio', label: 'Producing Audio & Beats', icon: '🥁' },
+  { key: 'performing', label: 'Singing with Realistic Vocals', icon: '🎤' },
   { key: 'uploading', label: 'Finalizing Song', icon: '✨' },
 ];
 

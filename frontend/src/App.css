@@ -1158,6 +1158,26 @@ select:focus {
   font-weight: 600;
 }
 
+.vocals-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.strictness-slider input[type="range"] {
+  width: 100%;
+  accent-color: var(--primary);
+}
+
+.strictness-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+}
+
 .tab-group {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1248,6 +1268,18 @@ select:focus {
   padding: 1.75rem;
   border: 1px solid var(--border-strong);
   box-shadow: var(--shadow-luxe);
+}
+
+.guide-player {
+  margin-top: 1rem;
+  padding: 1rem 1.25rem;
+  box-shadow: none;
+  opacity: 0.85;
+}
+
+.guide-player .lyrics-section-label {
+  display: block;
+  margin-bottom: 0.5rem;
 }
 
 .result-sections {

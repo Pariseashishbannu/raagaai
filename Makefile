@@ -1,4 +1,4 @@
-.PHONY: infra-up infra-down migrate seed run-api run-worker install test train-data train-model cloud-train-aws cloud-train-gcp cloud-train-azure cloud-deps
+.PHONY: infra-up infra-down migrate seed run-api run-worker install test train-data train-model cloud-train-aws cloud-train-gcp cloud-train-azure cloud-deps acestep-local
 
 install:
 	pip install -e ".[dev]"
@@ -44,3 +44,12 @@ cloud-train-azure:
 
 full-stack:
 	docker compose -f docker-compose.prod.yml up -d --build
+
+# ACE-Step 1.5 API server on this machine (clone https://github.com/ace-step/ACE-Step-1.5
+# next to this repo and `uv sync` there first). The base model needs ~5 GB, so on a
+# 4 GB GPU it runs with CPU offload — slow; prefer notebooks/acestep_server_colab.ipynb.
+ACESTEP_DIR ?= ../ACE-Step-1.5
+acestep-local:
+	cd $(ACESTEP_DIR) && ACESTEP_CONFIG_PATH=acestep-v15-base ACESTEP_INIT_LLM=false \
+		ACESTEP_OFFLOAD_TO_CPU=true ACESTEP_OFFLOAD_DIT_TO_CPU=true \
+		uv run acestep-api --host 127.0.0.1 --port 8001

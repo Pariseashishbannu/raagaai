@@ -30,6 +30,11 @@ export default function Generate() {
   const [mode, setMode] = useState('simple'); // 'simple' | 'advanced'
   const [prompt, setPrompt] = useState('');
   const [showNotation, setShowNotation] = useState(false);
+  const [vocals, setVocals] = useState({
+    realistic: true,
+    voice: 'female',
+    cover_strength: 0.7,
+  });
 
   const [form, setForm] = useState({
     raga_id: searchParams.get('raga') || 'mohanam',
@@ -61,8 +66,8 @@ export default function Generate() {
     setJobId(null);
     try {
       const payload = mode === 'simple'
-        ? { prompt, structure: 'song' }
-        : { ...form };
+        ? { prompt, structure: 'song', ...vocals }
+        : { ...form, ...vocals };
       const res = await submitGeneration(payload);
       setJobId(res.data.job_id);
     } catch (err) {
@@ -206,6 +211,61 @@ export default function Generate() {
                 </div>
               )}
 
+              <div className="form-group">
+                <label>
+                  <Mic2 size={14} />
+                  Vocals
+                </label>
+                <div className="tab-group">
+                  <button
+                    className={`tab-btn ${vocals.realistic ? 'active' : ''}`}
+                    onClick={() => setVocals({ ...vocals, realistic: true })}
+                    disabled={status === 'processing'}
+                  >
+                    Realistic
+                  </button>
+                  <button
+                    className={`tab-btn ${!vocals.realistic ? 'active' : ''}`}
+                    onClick={() => setVocals({ ...vocals, realistic: false })}
+                    disabled={status === 'processing'}
+                  >
+                    Synth only
+                  </button>
+                </div>
+                {vocals.realistic && (
+                  <div className="animate-fade-in vocals-options">
+                    <div className="tab-group">
+                      {['female', 'male'].map(v => (
+                        <button
+                          key={v}
+                          className={`tab-btn ${vocals.voice === v ? 'active' : ''}`}
+                          onClick={() => setVocals({ ...vocals, voice: v })}
+                          disabled={status === 'processing'}
+                        >
+                          {v === 'female' ? 'Female voice' : 'Male voice'}
+                        </button>
+                      ))}
+                    </div>
+                    <div className="strictness-slider">
+                      <div className="strictness-labels">
+                        <span>Natural</span>
+                        <span>Raga strictness {Math.round(vocals.cover_strength * 100)}%</span>
+                        <span>Strict</span>
+                      </div>
+                      <input
+                        type="range"
+                        min="0.4"
+                        max="0.95"
+                        step="0.05"
+                        value={vocals.cover_strength}
+                        onChange={(e) => setVocals({ ...vocals, cover_strength: Number(e.target.value) })}
+                        disabled={status === 'processing'}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+
               <button
                 className="btn btn-primary btn-full btn-lg"
                 onClick={handleSubmit}
@@ -252,6 +312,16 @@ export default function Generate() {
                     title={songTitle || 'New Creation'}
                   />
                 </div>
+
+                {status.result.guide_audio_url && (
+                  <div className="player-wrapper guide-player">
+                    <span className="lyrics-section-label">Guide melody (raw raga synth)</span>
+                    <AudioPlayer
+                      src={status.result.guide_audio_url}
+                      title="Guide melody"
+                    />
+                  </div>
+                )}
 
                 <div className="result-sections">
                   <div className="lyrics-section">
@@ -305,6 +375,18 @@ export default function Generate() {
                     <div className="meta-capsule">
                       <span className="label">Kala</span>
                       <span className="value">{status.result.metadata?.kala || 'Medium'}</span>
+                    </div>
+                    {status.result.raga_score != null && (
+                      <div className="meta-capsule" title="Share of sung time on the raga's svaras">
+                        <span className="label">Raga fidelity</span>
+                        <span className="value">{Math.round(status.result.raga_score * 100)}%</span>
+                      </div>
+                    )}
+                    <div className="meta-capsule">
+                      <span className="label">Vocals</span>
+                      <span className="value">
+                        {status.result.metadata?.performed_by === 'ace-step' ? 'Realistic' : 'Synth'}
+                      </span>
                     </div>
                     <button className="btn btn-outline ml-auto">
                       <Download size={18} />

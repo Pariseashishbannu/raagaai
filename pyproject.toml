@@ -37,6 +37,8 @@ dev = [
     "mypy>=1.10",
 ]
 neural = ["torch>=2.1", "torchaudio>=2.1"]
+# Raga scoring of ACE-Step performances (src/synthesis/performer.py)
+performer = ["librosa>=0.10"]
 
 [tool.ruff]
 line-length = 100
